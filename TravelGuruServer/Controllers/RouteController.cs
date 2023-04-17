@@ -19,15 +19,17 @@ namespace TravelGuruServer.Controllers
 
         private readonly IRouteRespositories _routesRepository;
         private readonly IMidWaypointRepositories _midWaypointsRepository;
-        private readonly IRouteDescriptionRepositories _routeDescriptionRepositories;
+        private readonly IRouteSectionRepositories _routeSectionRepositories;
+        private readonly IRoutePointRepositories _routePointRepositories;
 
         //private readonly IAuthorizationService _authorizationService;
 
-        public RouteController(IRouteRespositories routesRepository, IMidWaypointRepositories midWaypointsRepository, IRouteDescriptionRepositories routeDescriptionRepositories)
+        public RouteController(IRouteRespositories routesRepository, IMidWaypointRepositories midWaypointsRepository, IRouteSectionRepositories routeSectionRepositories, IRoutePointRepositories routePointRepositories)
         {
             _routesRepository = routesRepository;
             _midWaypointsRepository = midWaypointsRepository;
-            _routeDescriptionRepositories = routeDescriptionRepositories;
+            _routeSectionRepositories = routeSectionRepositories;
+            _routePointRepositories = routePointRepositories;
         }
 
         [HttpGet]
@@ -35,7 +37,7 @@ namespace TravelGuruServer.Controllers
         {
             var routes = await _routesRepository.GetRoutesAsync();
 
-            return routes.Select(o => new GetTRoutesDto(o.routeId, o.rOrigin, o.rDestination));
+            return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination));
         }
 
         [HttpGet]
@@ -48,32 +50,47 @@ namespace TravelGuruServer.Controllers
             if (route == null)
                 return NotFound();
 
-            return new TRouteDto(route.routeId, route.rOrigin, route.rDestination, route.UserId); //, route.rMidWaypoints
+            return new TRouteDto(route.routeId,route.rName, route.rOrigin, route.rDestination, route.UserId); //, route.rMidWaypoints
         }
         [HttpPost]
         public async Task<ActionResult<TRouteDto>> Create(CreateTRouteDto createTRouteDto)
         {
             var route = new TRoute
             {
+                rName= createTRouteDto.rName,
                 rOrigin = createTRouteDto.rOrigin,
                 //rMidWaypoints = createTRouteDto.rMidWaypoints,
                 rDestination = createTRouteDto.rDestination,
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _routesRepository.CreateAsync(route);
+            if (createTRouteDto.midWaypoints != null)
+            {
+                foreach (var item in createTRouteDto.midWaypoints)
+                {
+                    item.TRouterouteId = route.routeId;
+                    await _midWaypointsRepository.CreateAsync(item);
+                }
+            }
+            if (createTRouteDto.sectionDescriptions != null)
+            {
+                foreach (var item in createTRouteDto.sectionDescriptions)
+                {
+                    item.TRouterouteId = route.routeId;
+                    await _routeSectionRepositories.CreateAsync(item);
+                }
+            }
+            if(createTRouteDto.pointDescriptions != null)
+            {
+                foreach (var item in createTRouteDto.pointDescriptions)
+                {
+                    item.TRouterouteId = route.routeId;
+                    await _routePointRepositories.CreateAsync(item);
+                }
+            }
 
-            foreach (var item in createTRouteDto.midWaypoints)
-            {
-                item.TRouterouteId = route.routeId;
-                await _midWaypointsRepository.CreateAsync(item);
-            }
-            foreach (var item in createTRouteDto.descriptions)
-            {
-                item.TRouterouteId = route.routeId;
-                await _routeDescriptionRepositories.CreateAsync(item);
-            }
             // 201
-            return Created($"api/troutes/{route.routeId}", new GetTRouteDto(route.rOrigin, route.rDestination)); //, route.rMidWaypoints,
+            return Created($"api/troutes/{route.routeId}", new GetTRouteDto(route.rName, route.rOrigin, route.rDestination)); //, route.rMidWaypoints,
         }
         //[HttpPut]
         //[Route("{routeId}")]

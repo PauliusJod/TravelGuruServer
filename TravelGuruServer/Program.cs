@@ -42,7 +42,8 @@ builder.Services.AddIdentity<TravelUser, IdentityRole>()
 
 builder.Services.AddTransient<IRouteRespositories, RouteRespositories>();
 builder.Services.AddTransient<IMidWaypointRepositories, MidWaypointRepositories>();
-builder.Services.AddTransient<IRouteDescriptionRepositories, RouteDescriptionRepositories>();
+builder.Services.AddTransient<IRouteSectionRepositories, RouteSectionRepositories>();
+builder.Services.AddTransient<IRoutePointRepositories, RoutePointRepositories>();
 
 builder.Services.AddAuthentication(options =>
 {
