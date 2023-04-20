@@ -13,8 +13,10 @@ namespace TravelGuruServer.Entities
 
         // Kiekvienas taskas turi galeti tureti papildomas taskus/zymejimus
 
-        [Required]
-        public int TRouterouteId { get; set; }
+        //[Required]
+        //public int TRouterouteId { get; set; }
+        public int? TRoutePrivaterouteId { get; set; }
+        public int? TRoutePublicrouteId { get; set; }
 
     }
 }

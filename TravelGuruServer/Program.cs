@@ -40,10 +40,12 @@ builder.Services.AddIdentity<TravelUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 
-builder.Services.AddTransient<IRouteRespositories, RouteRespositories>();
+builder.Services.AddTransient<IRoutePrivateRespositories, RoutePrivateRespositories>();
+builder.Services.AddTransient<IRoutePublicRespositories, RoutePublicRespositories>();
 builder.Services.AddTransient<IMidWaypointRepositories, MidWaypointRepositories>();
 builder.Services.AddTransient<IRouteSectionRepositories, RouteSectionRepositories>();
 builder.Services.AddTransient<IRoutePointRepositories, RoutePointRepositories>();
+builder.Services.AddTransient<IAdditionalPointRepositories, AdditionalPointRepositories>();
 
 builder.Services.AddAuthentication(options =>
 {

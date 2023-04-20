@@ -1,57 +1,71 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using TravelGuruServer.Data.Dtos.Point;
 using TravelGuruServer.Entities;
 using TravelGuruServer.Repositories;
 
 namespace TravelGuruServer.Controllers
-{        
+{
     [ApiController]
-    [Route("api/troutes/{trouteId}/routepoints")]
+    [Route("api")]
     public class PointController : ControllerBase
     {
 
-            private readonly IRouteRespositories _routesRepository;
-            private readonly IRoutePointRepositories _routePointRepositories;
+        private readonly IRoutePointRepositories _routePointRepositories;
+        private readonly IAdditionalPointRepositories _additionalPointRepositories;
 
-            public PointController(IRouteRespositories routesRepository, IRoutePointRepositories routePointRepositories)
+        public PointController(IRoutePointRepositories routePointRepositories, IAdditionalPointRepositories additionalPointRepositories)
+        {
+            _routePointRepositories = routePointRepositories;
+            _additionalPointRepositories = additionalPointRepositories;
+        }
+
+        [HttpGet]
+        [Route("troutesprivate/{trouteId}/routepoints/{pointId}")]
+        public async Task<ActionResult<PointPrivateDto>> GetPointDescription(int trouteId, int pointId)
+        {
+            var point = await _routePointRepositories.GetTroutePointPrivateAsync(trouteId, pointId);
+
+            // 404
+            if (point == null)
+                return NotFound();
+
+            return new PointPrivateDto(point.pointId, point.pointOnRouteId, point.routePointDescription, point.AddinionalPointMarks, point.TRoutePrivaterouteId);
+        }
+
+        [HttpGet]
+        [Route("troutesprivate/{trouteId}/routepoints")]
+        public async Task<IEnumerable<PointPrivateDto>> GetPointsDescriptions(int trouteId)
+        {
+            var points = await _routePointRepositories.GetTroutePointsPrivateAsync(trouteId);
+
+            return points.Select(o => new PointPrivateDto(o.pointId, o.pointOnRouteId, o.routePointDescription, o.AddinionalPointMarks, o.TRoutePrivaterouteId));
+        }
+
+
+
+        [HttpPost]
+        [Route("troutesprivate/{trouteId}/routepoints")]
+        public async Task<ActionResult<PointPrivateDto>> Create(int trouteId, CreatePrivatePointDto createPrivatePointDto)
+        {
+            var point = new TroutePointDescription
             {
-                _routesRepository = routesRepository;
-                _routePointRepositories = routePointRepositories;
-            }
-
-            [HttpGet]
-            [Route("{pointId}")]
-            public async Task<ActionResult<PointDto>> GetMidWaypoint(int trouteId, int pointId)
+                pointOnRouteId = createPrivatePointDto.pointOnRouteId,
+                routePointDescription = createPrivatePointDto.routePointDescription,
+            };
+            if (createPrivatePointDto.AddinionalPointMarks != null)
             {
-                var point = await _routePointRepositories.GetTroutePointAsync(trouteId, pointId);
-
-                // 404
-                if (point == null)
-                    return NotFound();
-
-                return new PointDto(point.pointId, point.pointOnRouteId, point.routePointDescription, point.TRouterouteId);
-            }
-
-            [HttpGet]
-            public async Task<IEnumerable<PointDto>> GetMidWaypoints(int trouteId)
-            {
-                var midWaypoints = await _routePointRepositories.GetTroutePointsAsync(trouteId);
-
-                return midWaypoints.Select(o => new PointDto(o.pointId, o.pointOnRouteId, o.routePointDescription, o.TRouterouteId));
-            }
-
-            [HttpPost]
-            public async Task<ActionResult<PointDto>> Create(int trouteId, CreatePointDto createPointDto)
-            {
-                var point = new TroutePointDescription
+                foreach (var item in createPrivatePointDto.AddinionalPointMarks)
                 {
-                    pointOnRouteId = createPointDto.pointOnRouteId,
-                    routePointDescription = createPointDto.routePointDescription,
-                };
-                point.TRouterouteId = trouteId;
-                await _routePointRepositories.CreateAsync(point);
-                // 201
-                return Created($"api/troutes/{trouteId}/routepoints{point.pointId}", new CreatePointDto(point.pointOnRouteId, point.routePointDescription));
+                    item.TroutePointDescriptionpointId = point.pointId;
+                    await _additionalPointRepositories.CreatePointMarkAsync(item);
+                }
             }
+            point.TRoutePrivaterouteId = trouteId;
+            await _routePointRepositories.CreatePrivateAsync(point);
+            // 201
+            return Created($"api/troutes/{trouteId}/routepoints{point.pointId}", new CreatePrivatePointDto(point.pointOnRouteId, point.routePointDescription, point.AddinionalPointMarks, point.TRoutePrivaterouteId));
+        }
+
     }
 }

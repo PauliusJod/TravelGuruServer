@@ -11,7 +11,13 @@ namespace TravelGuruServer.Entities
         public string routePointDescription { get; set; }
 
 
-        [Required]
-        public int TRouterouteId { get; set; }
+        public List<AdditionalPoints>? AddinionalPointMarks { get; set; }
+
+
+        //[Required]
+        //public int TRouterouteId { get; set; }
+
+        public int? TRoutePrivaterouteId { get; set; }
+        public int? TRoutePublicrouteId { get; set; }
     }
 }

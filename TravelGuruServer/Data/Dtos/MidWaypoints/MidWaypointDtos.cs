@@ -1,6 +1,6 @@
 ﻿namespace TravelGuruServer.Data.Dtos.MidWaypoints;
 
 
-public record MidWaypointDto(int midWaypointId, string midWaypointLocation, bool midWaypointStopover, int routeId);
-public record CreateMidWaypointDto(string midWaypointLocation, bool midWaypointStopover); //, int routeId
-public record UpdateMidWaypointDto(string midWaypointLocation, bool midWaypointStopover, int routeId);
+public record MidWaypointPrivateDto(int midWaypointId, string midWaypointLocation, bool midWaypointStopover, int? TRoutePrivaterouteId);
+public record CreateMidWaypointPrivateDto(string midWaypointLocation, bool midWaypointStopover); //, int routeId
+public record UpdateMidWaypointPrivateDto(string midWaypointLocation, bool midWaypointStopover, int TRoutePrivaterouteId);

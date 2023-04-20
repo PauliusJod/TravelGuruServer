@@ -11,10 +11,13 @@ namespace TravelGuruServer.Data
         //IdentityDbContext<LibrariesUser>
         //public DbSet<> Test { get; set; }
 
-        public DbSet<TRoute> TRoutes { get; set; }
+        public DbSet<TRoutePublic> TRoutesPublic { get; set; }
+        public DbSet<TRoutePrivate> TRoutesPrivate { get; set; }
         public DbSet<MidWaypoint> MidWaypoints { get; set; }
         public DbSet<TrouteSectionDescription> TrouteSectionDescriptions { get; set; }
         public DbSet<TroutePointDescription> TroutePointDescriptions { get; set; }
+        public DbSet<AdditionalPoints> AdditionalPointPoints { get; set; }
+        public DbSet<AdditionalPoints> AdditionalSectionPoints { get; set; }
 
         //public DbSet<TravelUser> Users { get; set; }
 

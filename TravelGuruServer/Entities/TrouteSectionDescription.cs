@@ -10,7 +10,11 @@ namespace TravelGuruServer.Entities
         public string routeSectionDescription { get; set; }
 
 
-        [Required]
-        public int TRouterouteId { get; set; }
+        public List<AdditionalPoints>? AddinionalSectionPoints { get; set; }
+
+        //[Required]
+        //public int TRouterouteId { get; set; }
+        public int? TRoutePrivaterouteId { get; set; }
+        public int? TRoutePublicrouteId { get; set; }
     }
 }

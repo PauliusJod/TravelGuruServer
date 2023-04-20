@@ -28,7 +28,7 @@ namespace TravelGuruServer.Controllers
         {
             var user = await _userManager.FindByNameAsync(registerUserDto.UserName);
             if (user != null)
-                return BadRequest("Request invalid.");
+                return BadRequest("Request invalid."); // same user
 
             var newUser = new TravelUser
             {
@@ -44,7 +44,48 @@ namespace TravelGuruServer.Controllers
             return CreatedAtAction(nameof(Register), new UserDto(newUser.Id, newUser.UserName, newUser.Email));
 
         }
+        [HttpPut]
+        [Route("updatepassword")]
+        public async Task<ActionResult> UpdatePassword(UpdateUserPasswordDto updateUserPasswordDto)
+        {
+            var user = await _userManager.FindByNameAsync(updateUserPasswordDto.UserName);
+            if (user == null) // same user
+                return NotFound("Request invalid because of user name.");
 
+            if (updateUserPasswordDto.CurrentPassword == updateUserPasswordDto.NewPassword)
+            {
+                return BadRequest("Cannot update to password like this.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, updateUserPasswordDto.CurrentPassword, updateUserPasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+                return BadRequest("Can't update user.");
+
+
+            return Ok(new UserDto(user.Id, user.UserName, user.Email));
+        }
+        [HttpPut]
+        [Route("updateemail")]
+        public async Task<ActionResult> UpdatePassword(UpdateUserEmailDto updateUserEmailDto)
+        {
+            var user = await _userManager.FindByNameAsync(updateUserEmailDto.UserName);
+            if (user == null) // same user
+                return NotFound("Request invalid because of user name.");
+
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, updateUserEmailDto.NewEmail);
+            if (token == null)
+                return BadRequest("User email change isn't possible.");
+
+            var result = await _userManager.ChangeEmailAsync(user, updateUserEmailDto.NewEmail, token);
+
+            if (!result.Succeeded)
+                return BadRequest("Can't update user email.");
+
+
+            return Ok(new UserDto(user.Id, user.UserName, user.Email));
+        }
 
         [HttpPost]
         [Route("login")]

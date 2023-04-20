@@ -220,6 +220,38 @@ namespace TravelGuruServer.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("TravelGuruServer.Entities.AdditionalPoints", b =>
+                {
+                    b.Property<int>("additionalPointId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("additionalPointId"), 1L, 1);
+
+                    b.Property<int?>("TroutePointDescriptionpointId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TrouteSectionDescriptionsectionId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("additionalPointCoordX")
+                        .HasColumnType("real");
+
+                    b.Property<float>("additionalPointCoordY")
+                        .HasColumnType("real");
+
+                    b.Property<string>("additionalPointInformation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("additionalPointId");
+
+                    b.HasIndex("TroutePointDescriptionpointId");
+
+                    b.HasIndex("TrouteSectionDescriptionsectionId");
+
+                    b.ToTable("AdditionalPoints");
+                });
+
             modelBuilder.Entity("TravelGuruServer.Entities.MidWaypoint", b =>
                 {
                     b.Property<int>("midWaypointId")
@@ -228,7 +260,10 @@ namespace TravelGuruServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("midWaypointId"), 1L, 1);
 
-                    b.Property<int>("TRouterouteId")
+                    b.Property<int?>("TRoutePrivaterouteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TRoutePublicrouteId")
                         .HasColumnType("int");
 
                     b.Property<string>("midWaypointLocation")
@@ -239,40 +274,11 @@ namespace TravelGuruServer.Migrations
 
                     b.HasKey("midWaypointId");
 
-                    b.HasIndex("TRouterouteId");
+                    b.HasIndex("TRoutePrivaterouteId");
+
+                    b.HasIndex("TRoutePublicrouteId");
 
                     b.ToTable("MidWaypoints");
-                });
-
-            modelBuilder.Entity("TravelGuruServer.Entities.TRoute", b =>
-                {
-                    b.Property<int>("routeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("routeId"), 1L, 1);
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("rDestination")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rOrigin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("routeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TRoutes");
                 });
 
             modelBuilder.Entity("TravelGuruServer.Entities.TroutePointDescription", b =>
@@ -283,7 +289,10 @@ namespace TravelGuruServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("pointId"), 1L, 1);
 
-                    b.Property<int>("TRouterouteId")
+                    b.Property<int?>("TRoutePrivaterouteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TRoutePublicrouteId")
                         .HasColumnType("int");
 
                     b.Property<int>("pointOnRouteId")
@@ -295,9 +304,101 @@ namespace TravelGuruServer.Migrations
 
                     b.HasKey("pointId");
 
-                    b.HasIndex("TRouterouteId");
+                    b.HasIndex("TRoutePrivaterouteId");
+
+                    b.HasIndex("TRoutePublicrouteId");
 
                     b.ToTable("TroutePointDescriptions");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TRoutePrivate", b =>
+                {
+                    b.Property<int>("routeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("routeId"), 1L, 1);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("rCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rDestination")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rImagesUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rOrigin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rRecommendationUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("routeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TRoutesPrivate");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TRoutePublic", b =>
+                {
+                    b.Property<int>("routeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("routeId"), 1L, 1);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("rCost")
+                        .HasColumnType("float");
+
+                    b.Property<string>("rCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rDestination")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rImagesUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rOrigin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("rRating")
+                        .HasColumnType("real");
+
+                    b.Property<string>("rRecommendationUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("routeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TRoutesPublic");
                 });
 
             modelBuilder.Entity("TravelGuruServer.Entities.TrouteSectionDescription", b =>
@@ -308,7 +409,10 @@ namespace TravelGuruServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("sectionId"), 1L, 1);
 
-                    b.Property<int>("TRouterouteId")
+                    b.Property<int?>("TRoutePrivaterouteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TRoutePublicrouteId")
                         .HasColumnType("int");
 
                     b.Property<string>("routeSectionDescription")
@@ -320,7 +424,9 @@ namespace TravelGuruServer.Migrations
 
                     b.HasKey("sectionId");
 
-                    b.HasIndex("TRouterouteId");
+                    b.HasIndex("TRoutePrivaterouteId");
+
+                    b.HasIndex("TRoutePublicrouteId");
 
                     b.ToTable("TrouteSectionDescriptions");
                 });
@@ -376,16 +482,40 @@ namespace TravelGuruServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TravelGuruServer.Entities.MidWaypoint", b =>
+            modelBuilder.Entity("TravelGuruServer.Entities.AdditionalPoints", b =>
                 {
-                    b.HasOne("TravelGuruServer.Entities.TRoute", null)
-                        .WithMany("MidWaypoint")
-                        .HasForeignKey("TRouterouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("TravelGuruServer.Entities.TroutePointDescription", null)
+                        .WithMany("AddinionalPointMarks")
+                        .HasForeignKey("TroutePointDescriptionpointId");
+
+                    b.HasOne("TravelGuruServer.Entities.TrouteSectionDescription", null)
+                        .WithMany("AddinionalSectionPoints")
+                        .HasForeignKey("TrouteSectionDescriptionsectionId");
                 });
 
-            modelBuilder.Entity("TravelGuruServer.Entities.TRoute", b =>
+            modelBuilder.Entity("TravelGuruServer.Entities.MidWaypoint", b =>
+                {
+                    b.HasOne("TravelGuruServer.Entities.TRoutePrivate", null)
+                        .WithMany("MidWaypoint")
+                        .HasForeignKey("TRoutePrivaterouteId");
+
+                    b.HasOne("TravelGuruServer.Entities.TRoutePublic", null)
+                        .WithMany("MidWaypoint")
+                        .HasForeignKey("TRoutePublicrouteId");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TroutePointDescription", b =>
+                {
+                    b.HasOne("TravelGuruServer.Entities.TRoutePrivate", null)
+                        .WithMany("TroutePointDescription")
+                        .HasForeignKey("TRoutePrivaterouteId");
+
+                    b.HasOne("TravelGuruServer.Entities.TRoutePublic", null)
+                        .WithMany("TroutePointDescription")
+                        .HasForeignKey("TRoutePublicrouteId");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TRoutePrivate", b =>
                 {
                     b.HasOne("TravelGuruServer.Auth.Model.TravelUser", "User")
                         .WithMany()
@@ -396,31 +526,54 @@ namespace TravelGuruServer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TravelGuruServer.Entities.TroutePointDescription", b =>
+            modelBuilder.Entity("TravelGuruServer.Entities.TRoutePublic", b =>
                 {
-                    b.HasOne("TravelGuruServer.Entities.TRoute", null)
-                        .WithMany("TroutePointDescription")
-                        .HasForeignKey("TRouterouteId")
+                    b.HasOne("TravelGuruServer.Auth.Model.TravelUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TravelGuruServer.Entities.TrouteSectionDescription", b =>
                 {
-                    b.HasOne("TravelGuruServer.Entities.TRoute", null)
+                    b.HasOne("TravelGuruServer.Entities.TRoutePrivate", null)
                         .WithMany("TrouteSectionDescription")
-                        .HasForeignKey("TRouterouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TRoutePrivaterouteId");
+
+                    b.HasOne("TravelGuruServer.Entities.TRoutePublic", null)
+                        .WithMany("TrouteSectionDescription")
+                        .HasForeignKey("TRoutePublicrouteId");
                 });
 
-            modelBuilder.Entity("TravelGuruServer.Entities.TRoute", b =>
+            modelBuilder.Entity("TravelGuruServer.Entities.TroutePointDescription", b =>
+                {
+                    b.Navigation("AddinionalPointMarks");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TRoutePrivate", b =>
                 {
                     b.Navigation("MidWaypoint");
 
                     b.Navigation("TroutePointDescription");
 
                     b.Navigation("TrouteSectionDescription");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TRoutePublic", b =>
+                {
+                    b.Navigation("MidWaypoint");
+
+                    b.Navigation("TroutePointDescription");
+
+                    b.Navigation("TrouteSectionDescription");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.TrouteSectionDescription", b =>
+                {
+                    b.Navigation("AddinionalSectionPoints");
                 });
 #pragma warning restore 612, 618
         }
