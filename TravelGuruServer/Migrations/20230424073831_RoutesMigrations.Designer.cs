@@ -12,8 +12,8 @@ using TravelGuruServer.Data;
 namespace TravelGuruServer.Migrations
 {
     [DbContext(typeof(TravelDBContext))]
-    [Migration("20230419165206_RouteMigrations")]
-    partial class RouteMigrations
+    [Migration("20230424073831_RoutesMigrations")]
+    partial class RoutesMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -283,6 +283,56 @@ namespace TravelGuruServer.Migrations
                     b.ToTable("MidWaypoints");
                 });
 
+            modelBuilder.Entity("TravelGuruServer.Entities.RImagesUrl", b =>
+                {
+                    b.Property<int>("rImagesUrlId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("rImagesUrlId"), 1L, 1);
+
+                    b.Property<int?>("TRoutePrivaterouteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TRoutePublicrouteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("rImagesUrlLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("rImagesUrlId");
+
+                    b.HasIndex("TRoutePrivaterouteId");
+
+                    b.ToTable("RimagesUrl");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.RRecommendationUrl", b =>
+                {
+                    b.Property<int>("rRecommendationUrlId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("rRecommendationUrlId"), 1L, 1);
+
+                    b.Property<int?>("TRoutePrivaterouteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TRoutePublicrouteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("rRecommendationUrlLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("rRecommendationUrlId");
+
+                    b.HasIndex("TRoutePrivaterouteId");
+
+                    b.ToTable("RrecommendationUrl");
+                });
+
             modelBuilder.Entity("TravelGuruServer.Entities.TroutePointDescription", b =>
                 {
                     b.Property<int>("pointId")
@@ -332,18 +382,12 @@ namespace TravelGuruServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("rImagesUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("rName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("rOrigin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rRecommendationUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("routeId");
@@ -506,6 +550,20 @@ namespace TravelGuruServer.Migrations
                         .HasForeignKey("TRoutePublicrouteId");
                 });
 
+            modelBuilder.Entity("TravelGuruServer.Entities.RImagesUrl", b =>
+                {
+                    b.HasOne("TravelGuruServer.Entities.TRoutePrivate", null)
+                        .WithMany("rImagesUrl")
+                        .HasForeignKey("TRoutePrivaterouteId");
+                });
+
+            modelBuilder.Entity("TravelGuruServer.Entities.RRecommendationUrl", b =>
+                {
+                    b.HasOne("TravelGuruServer.Entities.TRoutePrivate", null)
+                        .WithMany("rRecommendationUrl")
+                        .HasForeignKey("TRoutePrivaterouteId");
+                });
+
             modelBuilder.Entity("TravelGuruServer.Entities.TroutePointDescription", b =>
                 {
                     b.HasOne("TravelGuruServer.Entities.TRoutePrivate", null)
@@ -562,6 +620,10 @@ namespace TravelGuruServer.Migrations
                     b.Navigation("TroutePointDescription");
 
                     b.Navigation("TrouteSectionDescription");
+
+                    b.Navigation("rImagesUrl");
+
+                    b.Navigation("rRecommendationUrl");
                 });
 
             modelBuilder.Entity("TravelGuruServer.Entities.TRoutePublic", b =>

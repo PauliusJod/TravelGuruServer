@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TravelGuruServer.Migrations
 {
-    public partial class RouteMigrations : Migration
+    public partial class RoutesMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -164,8 +164,6 @@ namespace TravelGuruServer.Migrations
                     rOrigin = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     rDestination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     rCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    rImagesUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    rRecommendationUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -205,6 +203,46 @@ namespace TravelGuruServer.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RimagesUrl",
+                columns: table => new
+                {
+                    rImagesUrlId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rImagesUrlLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
+                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RimagesUrl", x => x.rImagesUrlId);
+                    table.ForeignKey(
+                        name: "FK_RimagesUrl_TRoutesPrivate_TRoutePrivaterouteId",
+                        column: x => x.TRoutePrivaterouteId,
+                        principalTable: "TRoutesPrivate",
+                        principalColumn: "routeId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RrecommendationUrl",
+                columns: table => new
+                {
+                    rRecommendationUrlId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rRecommendationUrlLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
+                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RrecommendationUrl", x => x.rRecommendationUrlId);
+                    table.ForeignKey(
+                        name: "FK_RrecommendationUrl_TRoutesPrivate_TRoutePrivaterouteId",
+                        column: x => x.TRoutePrivaterouteId,
+                        principalTable: "TRoutesPrivate",
+                        principalColumn: "routeId");
                 });
 
             migrationBuilder.CreateTable(
@@ -372,6 +410,16 @@ namespace TravelGuruServer.Migrations
                 column: "TRoutePublicrouteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RimagesUrl_TRoutePrivaterouteId",
+                table: "RimagesUrl",
+                column: "TRoutePrivaterouteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RrecommendationUrl_TRoutePrivaterouteId",
+                table: "RrecommendationUrl",
+                column: "TRoutePrivaterouteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TroutePointDescriptions_TRoutePrivaterouteId",
                 table: "TroutePointDescriptions",
                 column: "TRoutePrivaterouteId");
@@ -424,6 +472,12 @@ namespace TravelGuruServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "MidWaypoints");
+
+            migrationBuilder.DropTable(
+                name: "RimagesUrl");
+
+            migrationBuilder.DropTable(
+                name: "RrecommendationUrl");
 
             migrationBuilder.DropTable(
                 name: "TroutePointDescriptions");

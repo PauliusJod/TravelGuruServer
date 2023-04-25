@@ -18,6 +18,8 @@ namespace TravelGuruServer.Data
         public DbSet<TroutePointDescription> TroutePointDescriptions { get; set; }
         public DbSet<AdditionalPoints> AdditionalPointPoints { get; set; }
         public DbSet<AdditionalPoints> AdditionalSectionPoints { get; set; }
+        public DbSet<RImagesUrl> RimagesUrl { get; set; }
+        public DbSet<RRecommendationUrl> RrecommendationUrl { get; set; }
 
         //public DbSet<TravelUser> Users { get; set; }
 

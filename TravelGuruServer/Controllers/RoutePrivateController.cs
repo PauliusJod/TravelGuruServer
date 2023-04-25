@@ -21,15 +21,19 @@ namespace TravelGuruServer.Controllers
         private readonly IMidWaypointRepositories _midWaypointsRepository;
         private readonly IRouteSectionRepositories _routeSectionRepositories;
         private readonly IRoutePointRepositories _routePointRepositories;
+        private readonly IRImagesUrlRepositories _rImagesUrlRepositories;
+        private readonly IRRecommendationUrlRepositories _rRecommendationUrlRepositories;
 
         //private readonly IAuthorizationService _authorizationService;
 
-        public RoutePrivateController(IRoutePrivateRespositories routesPrivateRepository, IMidWaypointRepositories midWaypointsRepository, IRouteSectionRepositories routeSectionRepositories, IRoutePointRepositories routePointRepositories)
+        public RoutePrivateController(IRoutePrivateRespositories routesPrivateRepository, IMidWaypointRepositories midWaypointsRepository, IRouteSectionRepositories routeSectionRepositories, IRoutePointRepositories routePointRepositories, IRImagesUrlRepositories rImagesUrlRepositories, IRRecommendationUrlRepositories rRecommendationUrlRepositories)
         {
             _routesPrivateRepository = routesPrivateRepository;
             _midWaypointsRepository = midWaypointsRepository;
             _routeSectionRepositories = routeSectionRepositories;
             _routePointRepositories = routePointRepositories;
+            _rImagesUrlRepositories= rImagesUrlRepositories;
+            _rRecommendationUrlRepositories = rRecommendationUrlRepositories;
         }
 
         [HttpGet]
@@ -37,7 +41,7 @@ namespace TravelGuruServer.Controllers
         {
             var routes = await _routesPrivateRepository.GetPrivateRoutesAsync();
 
-            return routes.Select(o => new GetTRoutesPrivateDto(o.routeId, o.rName, o.rOrigin, o.rDestination));
+            return routes.Select(o => new GetTRoutesPrivateDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
         [HttpGet]
         [Route("usercreated/{userId}")]
@@ -47,7 +51,7 @@ namespace TravelGuruServer.Controllers
             Console.WriteLine(userId);
             var routes = await _routesPrivateRepository.GetUserCreatedPrivateRoutesAsync(userId);
 
-            return routes.Select(o => new GetTRoutesPrivateDto(o.routeId, o.rName, o.rOrigin, o.rDestination));
+            return routes.Select(o => new GetTRoutesPrivateDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
         [HttpGet]
         [Route("{routeId}")]
@@ -70,11 +74,29 @@ namespace TravelGuruServer.Controllers
                 rOrigin = createTRoutePrivateDto.rOrigin,
                 rDestination = createTRoutePrivateDto.rDestination,
                 rCountry = createTRoutePrivateDto.rCountry,
-                rImagesUrl = createTRoutePrivateDto.rImagesUrl,
-                rRecommendationUrl = createTRoutePrivateDto.rRecommendationUrl,
+                //rImagesUrl = createTRoutePrivateDto.rImagesUrl,
+                //rRecommendationUrl = createTRoutePrivateDto.rRecommendationUrl,
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _routesPrivateRepository.CreatePrivateAsync(privateRoute);
+
+            if (createTRoutePrivateDto.rImagesUrl != null)
+            {
+                foreach (var item in createTRoutePrivateDto.rImagesUrl)
+                {
+                    item.TRoutePrivaterouteId = privateRoute.routeId;
+                    await _rImagesUrlRepositories.CreateImageAsync(item);
+                }
+            }
+
+            if (createTRoutePrivateDto.rRecommendationUrl != null)
+            {
+                foreach (var item in createTRoutePrivateDto.rRecommendationUrl)
+                {
+                    item.TRoutePrivaterouteId = privateRoute.routeId;
+                    await _rRecommendationUrlRepositories.CreateRecommendationAsync(item);
+                }
+            }
             if (createTRoutePrivateDto.midWaypoints != null)
             {
                 foreach (var item in createTRoutePrivateDto.midWaypoints)
@@ -91,7 +113,7 @@ namespace TravelGuruServer.Controllers
                     await _routeSectionRepositories.CreatePrivateAsync(item);
                 }
             }
-            if(createTRoutePrivateDto.pointDescriptions != null)
+            if (createTRoutePrivateDto.pointDescriptions != null)
             {
                 foreach (var item in createTRoutePrivateDto.pointDescriptions)
                 {
@@ -101,7 +123,7 @@ namespace TravelGuruServer.Controllers
             }
 
             // 201
-            return Created($"api/troutes/{privateRoute.routeId}", new GetTRoutePrivateDto(privateRoute.rName, privateRoute.rOrigin, privateRoute.rDestination)); //, route.rMidWaypoints,
+            return Created($"api/troutesprivate/{privateRoute.routeId}", new GetFullTRoutePrivateDto(privateRoute.rName, privateRoute.rOrigin, privateRoute.rDestination, privateRoute.rCountry, privateRoute.rImagesUrl, privateRoute.rRecommendationUrl, privateRoute.MidWaypoint, privateRoute.TrouteSectionDescription, privateRoute.TroutePointDescription)); //, route.rMidWaypoints,
         }
 
     }

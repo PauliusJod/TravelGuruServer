@@ -13,9 +13,9 @@ namespace TravelGuruServer.Entities
 
         public string? rCountry { get; set; }
 
-        public string? rImagesUrl { get; set; }
+        public List<RImagesUrl>? rImagesUrl { get; set; }
 
-        public string? rRecommendationUrl { get; set; }
+        public List<RRecommendationUrl>? rRecommendationUrl { get; set; }
 
 
         public List<MidWaypoint>? MidWaypoint { get; set; }

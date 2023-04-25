@@ -46,6 +46,9 @@ builder.Services.AddTransient<IMidWaypointRepositories, MidWaypointRepositories>
 builder.Services.AddTransient<IRouteSectionRepositories, RouteSectionRepositories>();
 builder.Services.AddTransient<IRoutePointRepositories, RoutePointRepositories>();
 builder.Services.AddTransient<IAdditionalPointRepositories, AdditionalPointRepositories>();
+builder.Services.AddTransient<IRImagesUrlRepositories, RImagesUrlRepositories>();
+builder.Services.AddTransient<IRRecommendationUrlRepositories, RRecommendationUrlRepositories>();
+
 
 builder.Services.AddAuthentication(options =>
 {
