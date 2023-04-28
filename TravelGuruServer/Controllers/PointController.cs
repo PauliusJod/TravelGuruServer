@@ -58,7 +58,7 @@ namespace TravelGuruServer.Controllers
                 foreach (var item in createPrivatePointDto.AddinionalPointMarks)
                 {
                     item.TroutePointDescriptionpointId = point.pointId;
-                    await _additionalPointRepositories.CreatePointMarkAsync(item);
+                    await _additionalPointRepositories.CreatePointAdditionalMarkAsync(item);
                 }
             }
             point.TRoutePrivaterouteId = trouteId;

@@ -12,8 +12,8 @@ using TravelGuruServer.Data;
 namespace TravelGuruServer.Migrations
 {
     [DbContext(typeof(TravelDBContext))]
-    [Migration("20230424073831_RoutesMigrations")]
-    partial class RoutesMigrations
+    [Migration("20230427115330_RouteMigrations")]
+    partial class RouteMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -242,8 +242,14 @@ namespace TravelGuruServer.Migrations
                     b.Property<float>("additionalPointCoordY")
                         .HasColumnType("real");
 
+                    b.Property<int>("additionalPointIdInList")
+                        .HasColumnType("int");
+
                     b.Property<string>("additionalPointInformation")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("additionalPointRouteId")
+                        .HasColumnType("int");
 
                     b.HasKey("additionalPointId");
 

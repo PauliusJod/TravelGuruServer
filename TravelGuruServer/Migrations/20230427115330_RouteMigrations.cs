@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TravelGuruServer.Migrations
 {
-    public partial class RoutesMigrations : Migration
+    public partial class RouteMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -329,6 +329,8 @@ namespace TravelGuruServer.Migrations
                 {
                     additionalPointId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    additionalPointRouteId = table.Column<int>(type: "int", nullable: false),
+                    additionalPointIdInList = table.Column<int>(type: "int", nullable: false),
                     additionalPointCoordX = table.Column<float>(type: "real", nullable: false),
                     additionalPointCoordY = table.Column<float>(type: "real", nullable: false),
                     additionalPointInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -6,9 +6,10 @@ namespace TravelGuruServer.Repositories
 {
     public interface IRRecommendationUrlRepositories
     {
-        Task CreateRecommendationAsync(RRecommendationUrl rRecommendationUrl);
-        Task<List<RRecommendationUrl>> GetRecommendationAsync();
-        Task<RRecommendationUrl?> GetRecommendationAsync(int recommendationId);
+        Task CreateRecommendationPrivateAsync(RRecommendationUrl rRecommendationUrl);
+        Task DeleteRecommendationPrivateAsync(RRecommendationUrl rRecommendationUrl);
+        Task<RRecommendationUrl?> GetRecommendationPrivateAsync(int recommendationId);
+        Task<List<RRecommendationUrl>> GetRecommendationsPrivateAsync(int routeId);
     }
 
     public class RRecommendationUrlRepositories : IRRecommendationUrlRepositories
@@ -20,18 +21,24 @@ namespace TravelGuruServer.Repositories
             _travelDbContext = travelDbContext;
         }
 
-        public async Task<RRecommendationUrl?> GetRecommendationAsync(int recommendationId)
+        public async Task<RRecommendationUrl?> GetRecommendationPrivateAsync(int recommendationId)
         {
             return await _travelDbContext.RrecommendationUrl.FirstOrDefaultAsync(o => o.rRecommendationUrlId == recommendationId);
         }
-        public async Task<List<RRecommendationUrl>> GetRecommendationAsync()
+        public async Task<List<RRecommendationUrl>> GetRecommendationsPrivateAsync(int routeId)
         {
-            return await _travelDbContext.RrecommendationUrl.ToListAsync();
+            return await _travelDbContext.RrecommendationUrl.Where(o => o.TRoutePrivaterouteId == routeId).ToListAsync();
         }
 
-        public async Task CreateRecommendationAsync(RRecommendationUrl rRecommendationUrl)
+        public async Task CreateRecommendationPrivateAsync(RRecommendationUrl rRecommendationUrl)
         {
             _travelDbContext.RrecommendationUrl.Add(rRecommendationUrl);
+            await _travelDbContext.SaveChangesAsync();
+
+        }
+        public async Task DeleteRecommendationPrivateAsync(RRecommendationUrl rRecommendationUrl)
+        {
+            _travelDbContext.RrecommendationUrl.Remove(rRecommendationUrl);
             await _travelDbContext.SaveChangesAsync();
 
         }

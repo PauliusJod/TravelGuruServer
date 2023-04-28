@@ -9,7 +9,7 @@ public record TRoutePrivateDto(int routeId, string rName, string rOrigin, string
 
 
 public record CreateTRoutePrivateDto(string rName, string rOrigin, string rDestination, string? rCountry, List<RImagesUrl>? rImagesUrl, List<RRecommendationUrl>? rRecommendationUrl, List<MidWaypoint> midWaypoints, List<TrouteSectionDescription>? sectionDescriptions, List<TroutePointDescription>? pointDescriptions); //, string rMidWaypoints,   , string UserId
-public record UpdateTRoutePrivateDto(string rOrigin, string rDestination, string? rCountry, List<RImagesUrl>? rImagesUrl, List<RRecommendationUrl>? rRecommendationUrl, string UserId); // string rMidWaypoints,
+public record UpdateTRoutePrivateDto(string rOrigin, string rDestination, string? rCountry, List<RImagesUrl>? rImagesUrl, List<RRecommendationUrl>? rRecommendationUrl, List<MidWaypoint> midWaypoints, List<TroutePointDescription>? pointDescriptions, List<List<AdditionalPoints>?>? additionalMarkers, string UserId); // string rMidWaypoints,
 
 
 public record GetTRoutePrivateDto(string rName, string rOrigin, string rDestination); // string rMidWaypoints,

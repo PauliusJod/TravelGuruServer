@@ -10,6 +10,7 @@ namespace TravelGuruServer.Repositories
         Task<TRoutePrivate?> GetPrivateRouteAsync(int routeid);
         Task<List<TRoutePrivate>> GetPrivateRoutesAsync();
         Task<List<TRoutePrivate>> GetUserCreatedPrivateRoutesAsync(string userId);
+        Task UpdatePrivateAsync(TRoutePrivate routePrivate);
     }
 
     public class RoutePrivateRespositories : IRoutePrivateRespositories
@@ -40,7 +41,12 @@ namespace TravelGuruServer.Repositories
             await _travelDbContext.SaveChangesAsync();
 
         }
+        public async Task UpdatePrivateAsync(TRoutePrivate routePrivate)
+        {
+            _travelDbContext.TRoutesPrivate.Update(routePrivate);
+            await _travelDbContext.SaveChangesAsync();
 
+        }
 
     }
 }

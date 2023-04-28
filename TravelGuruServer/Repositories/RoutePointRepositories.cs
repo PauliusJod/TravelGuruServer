@@ -38,6 +38,10 @@ namespace TravelGuruServer.Repositories
             await _travelDbContext.SaveChangesAsync();
 
         }
+
+
+
+
         //Public
         public async Task<TroutePointDescription?> GetTroutePointPublicAsync(int routeId, int pointid) //int routeid, 
         {

@@ -240,8 +240,14 @@ namespace TravelGuruServer.Migrations
                     b.Property<float>("additionalPointCoordY")
                         .HasColumnType("real");
 
+                    b.Property<int>("additionalPointIdInList")
+                        .HasColumnType("int");
+
                     b.Property<string>("additionalPointInformation")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("additionalPointRouteId")
+                        .HasColumnType("int");
 
                     b.HasKey("additionalPointId");
 

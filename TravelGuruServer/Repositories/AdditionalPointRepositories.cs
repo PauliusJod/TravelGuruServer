@@ -6,12 +6,14 @@ namespace TravelGuruServer.Repositories
 {
     public interface IAdditionalPointRepositories
     {
-        Task CreatePointMarkAsync(AdditionalPoints additionalPoint);
-        Task CreateSectionMarkAsync(AdditionalPoints additionalPoint);
-        Task<AdditionalPoints?> GetAdditionalPointMarkAsync(int pointId);
+        Task CreatePointAdditionalMarkAsync(AdditionalPoints additionalPoint);
+        Task CreateSectionAdditionalMarkAsync(AdditionalPoints additionalPoint);
+        Task<AdditionalPoints?> GetAdditionalPointMarkAsync(int routeId, int? pointId, int pointInListId);
         Task<List<AdditionalPoints>> GetAdditionalPointMarksAsync();
+        Task<List<AdditionalPoints>> GetAdditionalPointMarksChoosenRouteAsync(int routeId);
         Task<AdditionalPoints?> GetAdditionalSectionMarkAsync(int sectionId);
         Task<List<AdditionalPoints>> GetAdditionalSectionMarksAsync();
+        Task UpdateAdditionalPointMarkAsync(AdditionalPoints additionalPoint);
     }
 
     public class AdditionalPointRepositories : IAdditionalPointRepositories
@@ -23,22 +25,40 @@ namespace TravelGuruServer.Repositories
             _travelDbContext = travelDbContext;
         }
 
-        public async Task<AdditionalPoints?> GetAdditionalPointMarkAsync(int pointId)
+        public async Task<AdditionalPoints?> GetAdditionalPointMarkAsync(int routeId, int? pointId, int pointInListId)
         {
-            return await _travelDbContext.AdditionalPointPoints.FirstOrDefaultAsync(o => o.TroutePointDescriptionpointId == pointId);
+            return await _travelDbContext.AdditionalPointPoints.FirstOrDefaultAsync(o => o.additionalPointRouteId == routeId && o.TroutePointDescriptionpointId == pointId && o.additionalPointIdInList == pointInListId);
         }
         public async Task<List<AdditionalPoints>> GetAdditionalPointMarksAsync()
         {
             return await _travelDbContext.AdditionalPointPoints.ToListAsync();
         }
-
-        public async Task CreatePointMarkAsync(AdditionalPoints additionalPoint)
+        public async Task<List<AdditionalPoints>> GetAdditionalPointMarksChoosenRouteAsync(int routeId)
+        {
+            return await _travelDbContext.AdditionalPointPoints.Where(o => o.additionalPointRouteId == routeId).ToListAsync();
+        }
+        public async Task CreatePointAdditionalMarkAsync(AdditionalPoints additionalPoint)
         {
             _travelDbContext.AdditionalPointPoints.Add(additionalPoint);
             await _travelDbContext.SaveChangesAsync();
 
         }
 
+        public async Task UpdateAdditionalPointMarkAsync(AdditionalPoints additionalPoint)
+        {
+            _travelDbContext.AdditionalPointPoints.Update(additionalPoint);
+            await _travelDbContext.SaveChangesAsync();
+
+        }
+
+
+
+
+
+
+
+
+        //----------------------------------------------------------------------SECTION
         public async Task<AdditionalPoints?> GetAdditionalSectionMarkAsync(int sectionId)
         {
             return await _travelDbContext.AdditionalSectionPoints.FirstOrDefaultAsync(o => o.TrouteSectionDescriptionsectionId == sectionId);
@@ -48,7 +68,7 @@ namespace TravelGuruServer.Repositories
             return await _travelDbContext.AdditionalSectionPoints.ToListAsync();
         }
 
-        public async Task CreateSectionMarkAsync(AdditionalPoints additionalPoint)
+        public async Task CreateSectionAdditionalMarkAsync(AdditionalPoints additionalPoint)
         {
             _travelDbContext.AdditionalSectionPoints.Add(additionalPoint);
             await _travelDbContext.SaveChangesAsync();
