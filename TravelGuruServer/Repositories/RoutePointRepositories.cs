@@ -6,12 +6,10 @@ namespace TravelGuruServer.Repositories
 {
     public interface IRoutePointRepositories
     {
-        Task CreatePrivateAsync(TroutePointDescription routePointDescription);
-        Task CreatePublicAsync(TroutePointDescription routePointDescription);
-        Task<TroutePointDescription?> GetTroutePointPrivateAsync(int routeId, int pointid);
-        Task<TroutePointDescription?> GetTroutePointPublicAsync(int routeId, int pointid);
-        Task<List<TroutePointDescription>> GetTroutePointsPrivateAsync(int routeId);
-        Task<List<TroutePointDescription>> GetTroutePointsPublicAsync(int routeId);
+        Task CreateAsync(TroutePointDescription routePointDescription);
+        Task<TroutePointDescription?> GetTroutePointAsync(int routeId, int pointid);
+        Task<List<TroutePointDescription>> GetTroutePointsAsync(int routeId);
+        Task UpdateAsync(TroutePointDescription routePointDescription);
     }
 
     public class RoutePointRepositories : IRoutePointRepositories
@@ -22,42 +20,26 @@ namespace TravelGuruServer.Repositories
         {
             _travelDbContext = travelDbContext;
         }
-        //Private
-        public async Task<TroutePointDescription?> GetTroutePointPrivateAsync(int routeId, int pointid) //int routeid, 
+        public async Task<TroutePointDescription?> GetTroutePointAsync(int routeId, int pointid) //int routeid, 
         {
-            return await _travelDbContext.TroutePointDescriptions.FirstOrDefaultAsync(o => o.pointId == pointid && o.TRoutePrivaterouteId == routeId); // bad
+            return await _travelDbContext.TroutePointDescriptions.FirstOrDefaultAsync(o => o.pointId == pointid && o.TRouterouteId == routeId); // bad
         }
-        public async Task<List<TroutePointDescription>> GetTroutePointsPrivateAsync(int routeId)
+        public async Task<List<TroutePointDescription>> GetTroutePointsAsync(int routeId)
         {
-            return await _travelDbContext.TroutePointDescriptions.Where(o => o.TRoutePrivaterouteId == routeId).ToListAsync();
-        }
-
-        public async Task CreatePrivateAsync(TroutePointDescription routePointDescription)
-        {
-            _travelDbContext.TroutePointDescriptions.Add(routePointDescription);
-            await _travelDbContext.SaveChangesAsync();
-
+            return await _travelDbContext.TroutePointDescriptions.Where(o => o.TRouterouteId == routeId).ToListAsync();
         }
 
-
-
-
-        //Public
-        public async Task<TroutePointDescription?> GetTroutePointPublicAsync(int routeId, int pointid) //int routeid, 
-        {
-            return await _travelDbContext.TroutePointDescriptions.FirstOrDefaultAsync(o => o.pointId == pointid && o.TRoutePublicrouteId == routeId); // bad
-        }
-        public async Task<List<TroutePointDescription>> GetTroutePointsPublicAsync(int routeId)
-        {
-            return await _travelDbContext.TroutePointDescriptions.Where(o => o.TRoutePublicrouteId == routeId).ToListAsync();
-        }
-
-        public async Task CreatePublicAsync(TroutePointDescription routePointDescription)
+        public async Task CreateAsync(TroutePointDescription routePointDescription)
         {
             _travelDbContext.TroutePointDescriptions.Add(routePointDescription);
             await _travelDbContext.SaveChangesAsync();
 
         }
+        public async Task UpdateAsync(TroutePointDescription routePointDescription)
+        {
+            _travelDbContext.TroutePointDescriptions.Update(routePointDescription);
+            await _travelDbContext.SaveChangesAsync();
 
+        }
     }
 }

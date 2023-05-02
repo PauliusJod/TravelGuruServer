@@ -31,12 +31,12 @@ namespace TravelGuruServer.Controllers
         //}
 
         [HttpGet]
-        [Route("troutesprivate/{trouteId}/imageurl")]
-        public async Task<IEnumerable<ImagesUrlPrivateDto>> GetImagesUrls(int trouteId)
+        [Route("troutes/{trouteId}/imageurl")]
+        public async Task<IEnumerable<ImagesUrlDto>> GetImagesUrls(int trouteId)
         {
             var imagesUrls = await _rImagesUrlRepositories.GetImagesAsync(trouteId);
 
-            return imagesUrls.Select(o => new ImagesUrlPrivateDto(o.rImagesUrlId, o.rImagesUrlLink, o.TRoutePrivaterouteId));
+            return imagesUrls.Select(o => new ImagesUrlDto(o.rImagesUrlId, o.rImagesUrlLink, o.TRouterouteId));
         }
 
         //[HttpPost]

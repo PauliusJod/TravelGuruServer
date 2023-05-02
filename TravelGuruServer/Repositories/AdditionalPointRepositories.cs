@@ -10,6 +10,7 @@ namespace TravelGuruServer.Repositories
         Task CreateSectionAdditionalMarkAsync(AdditionalPoints additionalPoint);
         Task<AdditionalPoints?> GetAdditionalPointMarkAsync(int routeId, int? pointId, int pointInListId);
         Task<List<AdditionalPoints>> GetAdditionalPointMarksAsync();
+        Task<List<AdditionalPoints>> GetAdditionalPointMarksChoosenPointAsync(int pointId);
         Task<List<AdditionalPoints>> GetAdditionalPointMarksChoosenRouteAsync(int routeId);
         Task<AdditionalPoints?> GetAdditionalSectionMarkAsync(int sectionId);
         Task<List<AdditionalPoints>> GetAdditionalSectionMarksAsync();
@@ -37,13 +38,17 @@ namespace TravelGuruServer.Repositories
         {
             return await _travelDbContext.AdditionalPointPoints.Where(o => o.additionalPointRouteId == routeId).ToListAsync();
         }
+
+        public async Task<List<AdditionalPoints>> GetAdditionalPointMarksChoosenPointAsync(int pointId)
+        {
+            return await _travelDbContext.AdditionalPointPoints.Where(o => o.TroutePointDescriptionpointId == pointId).ToListAsync();
+        }
         public async Task CreatePointAdditionalMarkAsync(AdditionalPoints additionalPoint)
         {
             _travelDbContext.AdditionalPointPoints.Add(additionalPoint);
             await _travelDbContext.SaveChangesAsync();
 
         }
-
         public async Task UpdateAdditionalPointMarkAsync(AdditionalPoints additionalPoint)
         {
             _travelDbContext.AdditionalPointPoints.Update(additionalPoint);

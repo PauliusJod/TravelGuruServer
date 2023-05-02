@@ -14,7 +14,6 @@ namespace TravelGuruServer.Entities
 
         //[Required]
         //public int TRouterouteId { get; set; }
-        public int? TRoutePrivaterouteId { get; set; }
-        public int? TRoutePublicrouteId { get; set; }
+        public int? TRouterouteId { get; set; }
     }
 }

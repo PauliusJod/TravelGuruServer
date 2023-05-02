@@ -19,7 +19,7 @@ namespace TravelGuruServer.Controllers
         }
 
         [HttpGet]
-        [Route("troutesprivate/{trouteId}/midwaypoints/{midWaypointId}")]
+        [Route("troutes/{trouteId}/midwaypoints/{midWaypointId}")]
         public async Task<ActionResult<MidWaypointPrivateDto>> GetMidWaypoint(int trouteId, int midWaypointId)
         {
             var midWaypoint = await _midWaypointsRepository.GetMidWaypointAsync(trouteId, midWaypointId);
@@ -28,20 +28,20 @@ namespace TravelGuruServer.Controllers
             if (midWaypoint == null)
                 return NotFound();
 
-            return new MidWaypointPrivateDto(midWaypoint.midWaypointId, midWaypoint.midWaypointLocation, midWaypoint.midWaypointStopover, midWaypoint.TRoutePrivaterouteId);
+            return new MidWaypointPrivateDto(midWaypoint.midWaypointId, midWaypoint.midWaypointLocation, midWaypoint.midWaypointStopover, midWaypoint.TRouterouteId);
         }
 
         [HttpGet]
-        [Route("troutesprivate/{trouteId}/midwaypoints")]
+        [Route("troutes/{trouteId}/midwaypoints")]
         public async Task<IEnumerable<MidWaypointPrivateDto>> GetMidWaypoints(int trouteId)
         {
             var midWaypoints = await _midWaypointsRepository.GetMidWaypointsAsync(trouteId);
 
-            return midWaypoints.Select(o => new MidWaypointPrivateDto(o.midWaypointId, o.midWaypointLocation, o.midWaypointStopover, o.TRoutePrivaterouteId));
+            return midWaypoints.Select(o => new MidWaypointPrivateDto(o.midWaypointId, o.midWaypointLocation, o.midWaypointStopover, o.TRouterouteId));
         }
 
         [HttpPost]
-        [Route("troutesprivate/{trouteId}/midwaypoints")]
+        [Route("troutes/{trouteId}/midwaypoints")]
         public async Task<ActionResult<MidWaypointPrivateDto>> Create(int trouteId, CreateMidWaypointPrivateDto createMidWaypointPrivateDto)
         {
             var midWaypoint = new MidWaypoint
@@ -49,7 +49,7 @@ namespace TravelGuruServer.Controllers
                 midWaypointLocation = createMidWaypointPrivateDto.midWaypointLocation,
                 midWaypointStopover = createMidWaypointPrivateDto.midWaypointStopover,
             };
-            midWaypoint.TRoutePrivaterouteId = trouteId;
+            midWaypoint.TRouterouteId = trouteId;
             await _midWaypointsRepository.CreateAsync(midWaypoint);
             // 201
             return Created($"api/troutes/{trouteId}/midwaypoints{midWaypoint.midWaypointId}", new CreateMidWaypointPrivateDto(midWaypoint.midWaypointLocation, midWaypoint.midWaypointStopover));

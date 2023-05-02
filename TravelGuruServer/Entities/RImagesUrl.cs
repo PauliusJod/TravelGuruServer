@@ -9,7 +9,6 @@ namespace TravelGuruServer.Entities
         public string rImagesUrlLink { get; set; }
 
         //[Required]
-        public int? TRoutePrivaterouteId { get; set; }
-        public int? TRoutePublicrouteId { get; set; }
+        public int? TRouterouteId { get; set; }
     }
 }

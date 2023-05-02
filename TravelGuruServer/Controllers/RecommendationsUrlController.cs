@@ -21,24 +21,24 @@ namespace TravelGuruServer.Controllers
         }
 
         [HttpGet]
-        [Route("troutesprivate/{trouteId}/recommendationurl")]
+        [Route("troutes/{trouteId}/recommendationurl")]
         public async Task<IEnumerable<RecommendationPrivateDto>> GetRecommendationsUrls(int trouteId)
         {
-            var recommendationsUrls = await _rRecommendationUrlRepositories.GetRecommendationsPrivateAsync(trouteId);
+            var recommendationsUrls = await _rRecommendationUrlRepositories.GetRecommendationsAsync(trouteId);
 
-            return recommendationsUrls.Select(o => new RecommendationPrivateDto(o.rRecommendationUrlId, o.rRecommendationUrlLink, o.TRoutePrivaterouteId));
+            return recommendationsUrls.Select(o => new RecommendationPrivateDto(o.rRecommendationUrlId, o.rRecommendationUrlLink, o.TRouterouteId));
         }
 
         [HttpDelete]
-        [Route("troutesprivate/{trouteId}/recommendationurl/{recomendationId}")]
+        [Route("troutes/{trouteId}/recommendationurl/{recomendationId}")]
         public async Task<ActionResult> Remove(int routeId,int recomendationId)
         {
-            var recommendation = await _rRecommendationUrlRepositories.GetRecommendationPrivateAsync(recomendationId);
+            var recommendation = await _rRecommendationUrlRepositories.GetRecommendationAsync(recomendationId);
 
             // 404
             if (recommendation == null)
                 return NotFound();
-            await _rRecommendationUrlRepositories.DeleteRecommendationPrivateAsync(recommendation);
+            await _rRecommendationUrlRepositories.DeleteRecommendationAsync(recommendation);
 
             // 204
             return NoContent();
@@ -48,17 +48,17 @@ namespace TravelGuruServer.Controllers
 
         //CreateRecommendationPrivateAsync
         [HttpPost]
-        [Route("troutesprivate/{trouteId}/recommendationurl")]
+        [Route("troutes/{trouteId}/recommendationurl")]
         public async Task<ActionResult<RecommendationPrivateDto>> Create(int trouteId, CreatePrivateRecommendationDto createPrivateRecommendationDto)
         {
             var recommentation = new RRecommendationUrl
             {
                 rRecommendationUrlLink = createPrivateRecommendationDto.rRecommendationUrlLink,
             };
-            recommentation.TRoutePrivaterouteId = trouteId;
-            await _rRecommendationUrlRepositories.CreateRecommendationPrivateAsync(recommentation);
+            recommentation.TRouterouteId = trouteId;
+            await _rRecommendationUrlRepositories.CreateRecommendationAsync(recommentation);
             // 201
-            return Created($"api/troutesprivate/{trouteId}/recommendationurl{recommentation.TRoutePrivaterouteId}", new RecommendationPrivateDto(recommentation.rRecommendationUrlId, recommentation.rRecommendationUrlLink, recommentation.TRoutePrivaterouteId));
+            return Created($"api/troutes/{trouteId}/recommendationurl{recommentation.TRouterouteId}", new RecommendationPrivateDto(recommentation.rRecommendationUrlId, recommentation.rRecommendationUrlLink, recommentation.TRouterouteId));
         }
     }
 }

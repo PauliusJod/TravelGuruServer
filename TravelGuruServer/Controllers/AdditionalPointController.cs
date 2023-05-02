@@ -22,7 +22,7 @@ namespace TravelGuruServer.Controllers
         }
 
         [HttpGet]
-        [Route("troutesprivate/{trouteId}/additionalpoints")]
+        [Route("troutes/{trouteId}/additionalpoints")]
         public async Task<IEnumerable<AdditionalPointMarkerDto>> GetAdditionalPointsOnRoute(int trouteId)
         {
             var additionalPoints = await _additionalPointRepositories.GetAdditionalPointMarksChoosenRouteAsync(trouteId);

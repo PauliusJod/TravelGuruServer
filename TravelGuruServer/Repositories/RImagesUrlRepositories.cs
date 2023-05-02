@@ -26,7 +26,7 @@ namespace TravelGuruServer.Repositories
         }
         public async Task<List<RImagesUrl>> GetImagesAsync(int routeId)
         {
-            return await _travelDbContext.RimagesUrl.Where(o => o.TRoutePrivaterouteId == routeId).ToListAsync();
+            return await _travelDbContext.RimagesUrl.Where(o => o.TRouterouteId == routeId).ToListAsync();
         }
 
         public async Task CreateImageAsync(RImagesUrl rImagesUrl)

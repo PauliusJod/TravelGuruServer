@@ -155,22 +155,22 @@ namespace TravelGuruServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TRoutesPrivate",
+                name: "Comments",
                 columns: table => new
                 {
-                    routeId = table.Column<int>(type: "int", nullable: false)
+                    commentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    rName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    rOrigin = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    rDestination = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    rCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    commentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    commentRating = table.Column<float>(type: "real", nullable: false),
+                    commentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TRouterouteId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TRoutesPrivate", x => x.routeId);
+                    table.PrimaryKey("PK_Comments", x => x.commentId);
                     table.ForeignKey(
-                        name: "FK_TRoutesPrivate_AspNetUsers_UserId",
+                        name: "FK_Comments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -178,7 +178,7 @@ namespace TravelGuruServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TRoutesPublic",
+                name: "TRoutes",
                 columns: table => new
                 {
                     routeId = table.Column<int>(type: "int", nullable: false)
@@ -186,63 +186,21 @@ namespace TravelGuruServer.Migrations
                     rName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     rOrigin = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     rDestination = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    rCost = table.Column<double>(type: "float", nullable: false),
+                    rTripCost = table.Column<double>(type: "float", nullable: false),
                     rRating = table.Column<float>(type: "real", nullable: false),
-                    rType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    rIsPublished = table.Column<bool>(type: "bit", nullable: false),
                     rCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    rImagesUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    rRecommendationUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TRoutesPublic", x => x.routeId);
+                    table.PrimaryKey("PK_TRoutes", x => x.routeId);
                     table.ForeignKey(
-                        name: "FK_TRoutesPublic_AspNetUsers_UserId",
+                        name: "FK_TRoutes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RimagesUrl",
-                columns: table => new
-                {
-                    rImagesUrlId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    rImagesUrlLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
-                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RimagesUrl", x => x.rImagesUrlId);
-                    table.ForeignKey(
-                        name: "FK_RimagesUrl_TRoutesPrivate_TRoutePrivaterouteId",
-                        column: x => x.TRoutePrivaterouteId,
-                        principalTable: "TRoutesPrivate",
-                        principalColumn: "routeId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RrecommendationUrl",
-                columns: table => new
-                {
-                    rRecommendationUrlId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    rRecommendationUrlLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
-                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RrecommendationUrl", x => x.rRecommendationUrlId);
-                    table.ForeignKey(
-                        name: "FK_RrecommendationUrl_TRoutesPrivate_TRoutePrivaterouteId",
-                        column: x => x.TRoutePrivaterouteId,
-                        principalTable: "TRoutesPrivate",
-                        principalColumn: "routeId");
                 });
 
             migrationBuilder.CreateTable(
@@ -253,21 +211,53 @@ namespace TravelGuruServer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     midWaypointLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     midWaypointStopover = table.Column<bool>(type: "bit", nullable: false),
-                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
-                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
+                    TRouterouteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MidWaypoints", x => x.midWaypointId);
                     table.ForeignKey(
-                        name: "FK_MidWaypoints_TRoutesPrivate_TRoutePrivaterouteId",
-                        column: x => x.TRoutePrivaterouteId,
-                        principalTable: "TRoutesPrivate",
+                        name: "FK_MidWaypoints_TRoutes_TRouterouteId",
+                        column: x => x.TRouterouteId,
+                        principalTable: "TRoutes",
                         principalColumn: "routeId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RimagesUrl",
+                columns: table => new
+                {
+                    rImagesUrlId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rImagesUrlLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TRouterouteId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RimagesUrl", x => x.rImagesUrlId);
                     table.ForeignKey(
-                        name: "FK_MidWaypoints_TRoutesPublic_TRoutePublicrouteId",
-                        column: x => x.TRoutePublicrouteId,
-                        principalTable: "TRoutesPublic",
+                        name: "FK_RimagesUrl_TRoutes_TRouterouteId",
+                        column: x => x.TRouterouteId,
+                        principalTable: "TRoutes",
+                        principalColumn: "routeId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RrecommendationUrl",
+                columns: table => new
+                {
+                    rRecommendationUrlId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rRecommendationUrlLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TRouterouteId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RrecommendationUrl", x => x.rRecommendationUrlId);
+                    table.ForeignKey(
+                        name: "FK_RrecommendationUrl_TRoutes_TRouterouteId",
+                        column: x => x.TRouterouteId,
+                        principalTable: "TRoutes",
                         principalColumn: "routeId");
                 });
 
@@ -279,21 +269,15 @@ namespace TravelGuruServer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     pointOnRouteId = table.Column<int>(type: "int", nullable: false),
                     routePointDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
-                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
+                    TRouterouteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TroutePointDescriptions", x => x.pointId);
                     table.ForeignKey(
-                        name: "FK_TroutePointDescriptions_TRoutesPrivate_TRoutePrivaterouteId",
-                        column: x => x.TRoutePrivaterouteId,
-                        principalTable: "TRoutesPrivate",
-                        principalColumn: "routeId");
-                    table.ForeignKey(
-                        name: "FK_TroutePointDescriptions_TRoutesPublic_TRoutePublicrouteId",
-                        column: x => x.TRoutePublicrouteId,
-                        principalTable: "TRoutesPublic",
+                        name: "FK_TroutePointDescriptions_TRoutes_TRouterouteId",
+                        column: x => x.TRouterouteId,
+                        principalTable: "TRoutes",
                         principalColumn: "routeId");
                 });
 
@@ -305,21 +289,15 @@ namespace TravelGuruServer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     sectionOnRouteId = table.Column<int>(type: "int", nullable: false),
                     routeSectionDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TRoutePrivaterouteId = table.Column<int>(type: "int", nullable: true),
-                    TRoutePublicrouteId = table.Column<int>(type: "int", nullable: true)
+                    TRouterouteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TrouteSectionDescriptions", x => x.sectionId);
                     table.ForeignKey(
-                        name: "FK_TrouteSectionDescriptions_TRoutesPrivate_TRoutePrivaterouteId",
-                        column: x => x.TRoutePrivaterouteId,
-                        principalTable: "TRoutesPrivate",
-                        principalColumn: "routeId");
-                    table.ForeignKey(
-                        name: "FK_TrouteSectionDescriptions_TRoutesPublic_TRoutePublicrouteId",
-                        column: x => x.TRoutePublicrouteId,
-                        principalTable: "TRoutesPublic",
+                        name: "FK_TrouteSectionDescriptions_TRoutes_TRouterouteId",
+                        column: x => x.TRouterouteId,
+                        principalTable: "TRoutes",
                         principalColumn: "routeId");
                 });
 
@@ -402,54 +380,39 @@ namespace TravelGuruServer.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MidWaypoints_TRoutePrivaterouteId",
-                table: "MidWaypoints",
-                column: "TRoutePrivaterouteId");
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MidWaypoints_TRoutePublicrouteId",
+                name: "IX_MidWaypoints_TRouterouteId",
                 table: "MidWaypoints",
-                column: "TRoutePublicrouteId");
+                column: "TRouterouteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RimagesUrl_TRoutePrivaterouteId",
+                name: "IX_RimagesUrl_TRouterouteId",
                 table: "RimagesUrl",
-                column: "TRoutePrivaterouteId");
+                column: "TRouterouteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RrecommendationUrl_TRoutePrivaterouteId",
+                name: "IX_RrecommendationUrl_TRouterouteId",
                 table: "RrecommendationUrl",
-                column: "TRoutePrivaterouteId");
+                column: "TRouterouteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TroutePointDescriptions_TRoutePrivaterouteId",
+                name: "IX_TroutePointDescriptions_TRouterouteId",
                 table: "TroutePointDescriptions",
-                column: "TRoutePrivaterouteId");
+                column: "TRouterouteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TroutePointDescriptions_TRoutePublicrouteId",
-                table: "TroutePointDescriptions",
-                column: "TRoutePublicrouteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrouteSectionDescriptions_TRoutePrivaterouteId",
-                table: "TrouteSectionDescriptions",
-                column: "TRoutePrivaterouteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrouteSectionDescriptions_TRoutePublicrouteId",
-                table: "TrouteSectionDescriptions",
-                column: "TRoutePublicrouteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TRoutesPrivate_UserId",
-                table: "TRoutesPrivate",
+                name: "IX_TRoutes_UserId",
+                table: "TRoutes",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TRoutesPublic_UserId",
-                table: "TRoutesPublic",
-                column: "UserId");
+                name: "IX_TrouteSectionDescriptions_TRouterouteId",
+                table: "TrouteSectionDescriptions",
+                column: "TRouterouteId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -473,6 +436,9 @@ namespace TravelGuruServer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "MidWaypoints");
 
             migrationBuilder.DropTable(
@@ -491,10 +457,7 @@ namespace TravelGuruServer.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "TRoutesPrivate");
-
-            migrationBuilder.DropTable(
-                name: "TRoutesPublic");
+                name: "TRoutes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
