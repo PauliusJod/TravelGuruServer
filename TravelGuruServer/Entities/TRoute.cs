@@ -33,10 +33,3 @@ namespace TravelGuruServer.Entities
         public TravelUser User { get; set; }
     }
 }
-
-
-
-//public double rCost { get; set; } // extra
-//public float rRating { get; set; }
-
-//public string rType { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TravelGuruServer.Data.Dtos.MidWaypoints;
 using TravelGuruServer.Data.Dtos.rImagesUrl;
+using TravelGuruServer.Data.Dtos.rRecommendationUrl;
 using TravelGuruServer.Entities;
 using TravelGuruServer.Repositories;
 
@@ -17,18 +18,6 @@ namespace TravelGuruServer.Controllers
             _rImagesUrlRepositories = rImagesUrlRepositories;
         }
 
-        //[HttpGet]
-        //[Route("troutesprivate/{trouteId}/midwaypoints/{midWaypointId}")]
-        //public async Task<ActionResult<MidWaypointPrivateDto>> GetMidWaypoint(int trouteId, int midWaypointId)
-        //{
-        //    var midWaypoint = await _rImagesUrlRepositories.GetMidWaypointAsync(trouteId, midWaypointId);
-
-        //    // 404
-        //    if (midWaypoint == null)
-        //        return NotFound();
-
-        //    return new MidWaypointPrivateDto(midWaypoint.midWaypointId, midWaypoint.midWaypointLocation, midWaypoint.midWaypointStopover, midWaypoint.TRoutePrivaterouteId);
-        //}
 
         [HttpGet]
         [Route("troutes/{trouteId}/imageurl")]
@@ -39,19 +28,18 @@ namespace TravelGuruServer.Controllers
             return imagesUrls.Select(o => new ImagesUrlDto(o.rImagesUrlId, o.rImagesUrlLink, o.TRouterouteId));
         }
 
-        //[HttpPost]
-        //[Route("troutesprivate/{trouteId}/midwaypoints")]
-        //public async Task<ActionResult<MidWaypointPrivateDto>> Create(int trouteId, CreateMidWaypointPrivateDto createMidWaypointPrivateDto)
-        //{
-        //    var midWaypoint = new MidWaypoint
-        //    {
-        //        midWaypointLocation = createMidWaypointPrivateDto.midWaypointLocation,
-        //        midWaypointStopover = createMidWaypointPrivateDto.midWaypointStopover,
-        //    };
-        //    midWaypoint.TRoutePrivaterouteId = trouteId;
-        //    await _rImagesUrlRepositories.CreateAsync(midWaypoint);
-        //    // 201
-        //    return Created($"api/troutes/{trouteId}/midwaypoints{midWaypoint.midWaypointId}", new CreateMidWaypointPrivateDto(midWaypoint.midWaypointLocation, midWaypoint.midWaypointStopover));
-        //}
+        [HttpPost]
+        [Route("troutes/{trouteId}/newimageurl")]
+        public async Task<ActionResult<ImagesUrlDto>> Create(int trouteId, CreateImagesUrlDto createImagesUrlDto)
+        {
+            var image = new RImagesUrl
+            {
+                rImagesUrlLink = createImagesUrlDto.rImagesUrlLink,
+            };
+            image.TRouterouteId = trouteId;
+            await _rImagesUrlRepositories.CreateImageAsync(image);
+            // 201
+            return Created($"api/troutes/{trouteId}/newimageurl{image.TRouterouteId}", new ImagesUrlDto(image.rImagesUrlId, image.rImagesUrlLink, image.TRouterouteId));
+        }
     }
 }

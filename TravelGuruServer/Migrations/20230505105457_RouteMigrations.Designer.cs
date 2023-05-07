@@ -12,7 +12,7 @@ using TravelGuruServer.Data;
 namespace TravelGuruServer.Migrations
 {
     [DbContext(typeof(TravelDBContext))]
-    [Migration("20230430160015_RouteMigrations")]
+    [Migration("20230505105457_RouteMigrations")]
     partial class RouteMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -246,6 +246,21 @@ namespace TravelGuruServer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("additionalPointInformation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("additionalPointPlaceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("additionalPointPlaceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("additionalPointPlaceRating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("additionalPointPlaceRefToMaps")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("additionalPointPlaceType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("additionalPointRouteId")

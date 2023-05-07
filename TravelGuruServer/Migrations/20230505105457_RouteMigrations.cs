@@ -312,6 +312,11 @@ namespace TravelGuruServer.Migrations
                     additionalPointCoordX = table.Column<float>(type: "real", nullable: false),
                     additionalPointCoordY = table.Column<float>(type: "real", nullable: false),
                     additionalPointInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    additionalPointPlaceName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    additionalPointPlaceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    additionalPointPlaceRating = table.Column<double>(type: "float", nullable: true),
+                    additionalPointPlaceType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    additionalPointPlaceRefToMaps = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TroutePointDescriptionpointId = table.Column<int>(type: "int", nullable: true),
                     TrouteSectionDescriptionsectionId = table.Column<int>(type: "int", nullable: true)
                 },

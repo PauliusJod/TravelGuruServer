@@ -12,8 +12,13 @@ namespace TravelGuruServer.Entities
         public float additionalPointCoordX { get; set; }
         public float additionalPointCoordY { get; set; }
         public string? additionalPointInformation { get; set; }
+        public string? additionalPointPlaceName { get; set; }
+        public string? additionalPointPlaceId { get; set; }
+        public double? additionalPointPlaceRating { get; set; }
+        public string? additionalPointPlaceType { get; set; }
+        public string? additionalPointPlaceRefToMaps { get; set; }
 
-        //public int additionalPointUsedById { get; set; } //     route point/route section
+
         public int? TroutePointDescriptionpointId { get; set; }
         public int? TrouteSectionDescriptionsectionId { get; set; }
 

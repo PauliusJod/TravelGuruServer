@@ -246,6 +246,21 @@ namespace TravelGuruServer.Migrations
                     b.Property<string>("additionalPointInformation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("additionalPointPlaceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("additionalPointPlaceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("additionalPointPlaceRating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("additionalPointPlaceRefToMaps")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("additionalPointPlaceType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("additionalPointRouteId")
                         .HasColumnType("int");
 

@@ -12,8 +12,6 @@ namespace TravelGuruServer.Entities
 
         public List<AdditionalPoints>? AddinionalSectionPoints { get; set; }
 
-        //[Required]
-        //public int TRouterouteId { get; set; }
         public int? TRouterouteId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
@@ -44,7 +45,18 @@ namespace TravelGuruServer.Controllers
         [Route("public")]
         public async Task<IEnumerable<GetTRoutesDto>> GetPublicTRoutes()
         {
+            //IEnumerable
             var routes = await _routesRepository.GetPublicRoutesAsync();
+
+            //// 404
+            //if (routes == null)
+            //    return NotFound();
+
+            foreach (var item in routes)
+            {
+                var images = await _rImagesUrlRepositories.GetImagesAsync(item.routeId);
+                item.rImagesUrl = images;
+            }
 
             return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
@@ -193,6 +205,21 @@ namespace TravelGuruServer.Controllers
             route.rRating = updateTRouteDto.rRating;
             route.rIsPublished = updateTRouteDto.rIsPublished;
             route.rCountry = updateTRouteDto.rCountry;
+            await _routesRepository.UpdateAsync(route);
+
+            return Ok(new TRouteDto(route.routeId, route.rName, route.rOrigin, route.rDestination, route.rTripCost, route.rRating, route.rIsPublished, route.UserId));
+        }
+        [HttpPut]
+        [Route("{routeId}/publish")] 
+        public async Task<ActionResult<TRouteDto>> UpdatePublish(int routeId, UpdateTRoutePublishDto updateTRoutePublishDto)
+        {
+            var route = await _routesRepository.GetRouteAsync(routeId);
+
+            if (route == null)
+                return NotFound($"ERROR with routeId: {routeId}");
+
+            route.rIsPublished = updateTRoutePublishDto.rIsPublished;
+
             await _routesRepository.UpdateAsync(route);
 
             return Ok(new TRouteDto(route.routeId, route.rName, route.rOrigin, route.rDestination, route.rTripCost, route.rRating, route.rIsPublished, route.UserId));
