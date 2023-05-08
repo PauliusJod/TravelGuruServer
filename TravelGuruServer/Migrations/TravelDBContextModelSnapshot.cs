@@ -288,6 +288,10 @@ namespace TravelGuruServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("commentDate")
                         .HasColumnType("datetime2");
 

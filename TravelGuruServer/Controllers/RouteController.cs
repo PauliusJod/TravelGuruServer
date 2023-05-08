@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
+using TravelGuruServer.Auth.Model;
 using TravelGuruServer.Data.Dtos.MidWaypoints;
 using TravelGuruServer.Data.Dtos.TRoute;
 using TravelGuruServer.Entities;
@@ -27,10 +30,12 @@ namespace TravelGuruServer.Controllers
         private readonly IRRecommendationUrlRepositories _rRecommendationUrlRepositories;
         private readonly IAdditionalPointRepositories _additionalPointRepositories;
 
+        private readonly UserManager<TravelUser> _userManager;
         //private readonly IAuthorizationService _authorizationService;
 
-        public RouteController(IRouteRespositories routesRepository, IMidWaypointRepositories midWaypointsRepository, IRouteSectionRepositories routeSectionRepositories, IRoutePointRepositories routePointRepositories, IRImagesUrlRepositories rImagesUrlRepositories, IRRecommendationUrlRepositories rRecommendationUrlRepositories, IAdditionalPointRepositories additionalPointRepositories)
+        public RouteController(UserManager<TravelUser> userManager,IRouteRespositories routesRepository, IMidWaypointRepositories midWaypointsRepository, IRouteSectionRepositories routeSectionRepositories, IRoutePointRepositories routePointRepositories, IRImagesUrlRepositories rImagesUrlRepositories, IRRecommendationUrlRepositories rRecommendationUrlRepositories, IAdditionalPointRepositories additionalPointRepositories)
         {
+            _userManager = userManager;
             _routesRepository = routesRepository;
             _midWaypointsRepository = midWaypointsRepository;
             _routeSectionRepositories = routeSectionRepositories;
@@ -78,6 +83,26 @@ namespace TravelGuruServer.Controllers
 
             return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
+
+        //[HttpGet]
+        //[Route("usercreated/{userId}")]
+        //public async Task<IActionResult> GetUserCreatedPrivateTRoutes(string userId)
+        //{
+
+        //    if(userId != User.FindFirstValue(JwtRegisteredClaimNames.Sub))
+        //    {
+        //        return Unauthorized();
+        //    }
+        //    var userValid = await _userManager.FindByIdAsync(userId);
+        //    if (userValid == null)
+        //    {
+        //        return NotFound("User was not found");
+        //    }
+        //    var routes = await _routesRepository.GetUserCreatedRoutesAsync(userId);
+        //    if (routes.Count == 0) return NotFound($"User have zero routes created");
+
+        //    return Ok(routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl)));
+        //}
         [HttpGet]
         [Route("{routeId}")]
         public async Task<ActionResult<TRouteDto>> GetPrivateTRoute(int routeId)

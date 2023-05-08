@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TravelGuruServer.Migrations
 {
-    public partial class RouteMigrations : Migration
+    public partial class ROUTE : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -164,7 +164,8 @@ namespace TravelGuruServer.Migrations
                     commentRating = table.Column<float>(type: "real", nullable: false),
                     commentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TRouterouteId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using TravelGuruServer.Auth.Model;
 using TravelGuruServer.Auth;
 using static TravelGuruServer.Data.Dtos.AuthDtos;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace TravelGuruServer.Controllers
 {
@@ -49,12 +52,12 @@ namespace TravelGuruServer.Controllers
         public async Task<ActionResult> UpdatePassword(UpdateUserPasswordDto updateUserPasswordDto)
         {
             var user = await _userManager.FindByNameAsync(updateUserPasswordDto.UserName);
-            if (user == null) // same user
+            if (user == null)
                 return NotFound("Request invalid because of user name.");
 
             if (updateUserPasswordDto.CurrentPassword == updateUserPasswordDto.NewPassword)
             {
-                return BadRequest("Cannot update to password like this.");
+                return BadRequest("Please input new password.");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, updateUserPasswordDto.CurrentPassword, updateUserPasswordDto.NewPassword);
@@ -67,16 +70,25 @@ namespace TravelGuruServer.Controllers
         }
         [HttpPut]
         [Route("updateemail")]
-        public async Task<ActionResult> UpdatePassword(UpdateUserEmailDto updateUserEmailDto)
+        public async Task<ActionResult> UpdateEmail(UpdateUserEmailDto updateUserEmailDto)
         {
+
+            var userIdByToken = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            if (userIdByToken == null) return Unauthorized();
+
             var user = await _userManager.FindByNameAsync(updateUserEmailDto.UserName);
-            if (user == null) // same user
+
+            if (user == null)
                 return NotFound("Request invalid because of user name.");
+
+            if (userIdByToken != user.Id) return Unauthorized("The user you trying to edit isn't your profile");
+
+
 
 
             var token = await _userManager.GenerateChangeEmailTokenAsync(user, updateUserEmailDto.NewEmail);
             if (token == null)
-                return BadRequest("User email change isn't possible.");
+                return BadRequest("User email change isn't possible. Check your new email input field.");
 
             var result = await _userManager.ChangeEmailAsync(user, updateUserEmailDto.NewEmail, token);
 
@@ -98,7 +110,6 @@ namespace TravelGuruServer.Controllers
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!isPasswordValid)
                 return BadRequest("Password is invalid.");
-
 
             //valid user
             var roles = await _userManager.GetRolesAsync(user);

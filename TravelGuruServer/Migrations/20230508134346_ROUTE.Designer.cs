@@ -12,8 +12,8 @@ using TravelGuruServer.Data;
 namespace TravelGuruServer.Migrations
 {
     [DbContext(typeof(TravelDBContext))]
-    [Migration("20230505105457_RouteMigrations")]
-    partial class RouteMigrations
+    [Migration("20230508134346_ROUTE")]
+    partial class ROUTE
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -289,6 +289,10 @@ namespace TravelGuruServer.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("commentDate")
                         .HasColumnType("datetime2");

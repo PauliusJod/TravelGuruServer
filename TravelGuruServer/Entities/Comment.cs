@@ -14,6 +14,7 @@ namespace TravelGuruServer.Entities
 
         [Required]
         public string UserId { get; set; }
+        public string UserName { get; set; }
         public TravelUser User { get; set; }
     }
 }
