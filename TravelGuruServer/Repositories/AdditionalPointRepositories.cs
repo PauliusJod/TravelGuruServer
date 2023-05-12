@@ -7,6 +7,7 @@ namespace TravelGuruServer.Repositories
     public interface IAdditionalPointRepositories
     {
         Task CreatePointAdditionalMarkAsync(AdditionalPoints additionalPoint);
+        Task DeleteAsync(AdditionalPoints additionalPoint);
         Task<AdditionalPoints?> GetAdditionalPointForTextUpdateAsync(int routeId, int? pointId, int pointInListId);
         Task<AdditionalPoints?> GetAdditionalPointMarkAsync(int routeId, int? pointId, int pointInListId);
         Task<List<AdditionalPoints>> GetAdditionalPointMarksAsync();
@@ -58,10 +59,11 @@ namespace TravelGuruServer.Repositories
 
         }
 
-
-
-
-
+        public async Task DeleteAsync(AdditionalPoints additionalPoint)
+        {
+            _travelDbContext.AdditionalPointPoints.Remove(additionalPoint);
+            await _travelDbContext.SaveChangesAsync();
+        }
 
 
 
