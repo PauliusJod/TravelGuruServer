@@ -31,9 +31,9 @@ namespace TravelGuruServer.Controllers
 
         [HttpDelete]
         [Route("troutes/{trouteId}/recommendationurl/{recomendationId}")]
-        public async Task<ActionResult> Remove(int routeId,int recomendationId)
+        public async Task<ActionResult> Remove(int routeId,int recommendationId)
         {
-            var recommendation = await _rRecommendationUrlRepositories.GetRecommendationAsync(recomendationId);
+            var recommendation = await _rRecommendationUrlRepositories.GetRecommendationAsync(recommendationId);
 
             // 404
             if (recommendation == null)

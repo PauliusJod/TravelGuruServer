@@ -75,7 +75,7 @@ namespace TravelGuruServer.Controllers
 
         [HttpPut]
         [Route("troutes/{routeId}/point/{pointId}/additionalpoints/{addInListId}")]
-        public async Task<ActionResult<TRouteDto>> Update(int routeId, int pointId, int addInListId, UpdateAdditionalPointDescriptionDto updateAdditionalPointDescriptionDto)
+        public async Task<ActionResult<TRouteDto>> UpdateDescription(int routeId, int pointId, int addInListId, UpdateAdditionalPointDescriptionDto updateAdditionalPointDescriptionDto)
         {
             var addPoint = await _additionalPointRepositories.GetAdditionalPointForTextUpdateAsync(routeId, pointId, addInListId);
 
@@ -93,7 +93,7 @@ namespace TravelGuruServer.Controllers
         }
         [HttpPut]
         [Route("troutes/{routeId}/point/{pointId}/additionalpointdata/{addInListId}")]
-        public async Task<ActionResult<TRouteDto>> Update(int routeId, int pointId, int addInListId, UpdateAdditionalPointAddPlaceDto updateAdditionalPointAddPlaceDto)
+        public async Task<ActionResult<TRouteDto>> UpdatePlace(int routeId, int pointId, int addInListId, UpdateAdditionalPointAddPlaceDto updateAdditionalPointAddPlaceDto)
         {
             var addPoint = await _additionalPointRepositories.GetAdditionalPointForTextUpdateAsync(routeId, pointId, addInListId);
 

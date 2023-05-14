@@ -66,13 +66,13 @@ namespace TravelGuruServer.Controllers
             return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<GetTRoutesDto>> GetPrivateTRoutes()
-        {
-            var routes = await _routesRepository.GetRoutesAsync();
+        //[HttpGet]
+        //public async Task<IEnumerable<GetTRoutesDto>> GetPrivateTRoutes()
+        //{
+        //    var routes = await _routesRepository.GetRoutesAsync();
 
-            return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
-        }
+        //    return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
+        //}
         [HttpGet]
         [Route("usercreated/{userId}")]
         public async Task<IEnumerable<GetTRoutesDto>> GetUserCreatedPrivateTRoutes(string userId)
@@ -156,14 +156,14 @@ namespace TravelGuruServer.Controllers
                     await _midWaypointsRepository.CreateAsync(item);
                 }
             }
-            if (createTRouteDto.sectionDescriptions != null)
-            {
-                foreach (var item in createTRouteDto.sectionDescriptions)
-                {
-                    item.TRouterouteId = route.routeId;
-                    await _routeSectionRepositories.CreateAsync(item);
-                }
-            }
+            //if (createTRouteDto.sectionDescriptions != null)
+            //{
+            //    foreach (var item in createTRouteDto.sectionDescriptions)
+            //    {
+            //        item.TRouterouteId = route.routeId;
+            //        await _routeSectionRepositories.CreateAsync(item);
+            //    }
+            //}
             if (createTRouteDto.pointDescriptions != null)
             {
                 foreach (var item in createTRouteDto.pointDescriptions)
