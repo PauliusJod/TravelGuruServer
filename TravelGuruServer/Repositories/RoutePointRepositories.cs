@@ -20,9 +20,9 @@ namespace TravelGuruServer.Repositories
         {
             _travelDbContext = travelDbContext;
         }
-        public async Task<TroutePointDescription?> GetTroutePointAsync(int routeId, int pointid) //int routeid, 
+        public async Task<TroutePointDescription?> GetTroutePointAsync(int routeId, int pointid)
         {
-            return await _travelDbContext.TroutePointDescriptions.FirstOrDefaultAsync(o => o.pointId == pointid && o.TRouterouteId == routeId); // bad
+            return await _travelDbContext.TroutePointDescriptions.FirstOrDefaultAsync(o => o.pointId == pointid && o.TRouterouteId == routeId);
         }
         public async Task<List<TroutePointDescription>> GetTroutePointsAsync(int routeId)
         {

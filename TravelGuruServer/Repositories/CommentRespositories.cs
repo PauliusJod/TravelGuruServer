@@ -21,9 +21,9 @@ namespace TravelGuruServer.Repositories
             _travelDbContext = travelDbContext;
         }
 
-        public async Task<Comment?> GetCommentAsync(int routeId, int commentId) //int routeid, 
+        public async Task<Comment?> GetCommentAsync(int routeId, int commentId)
         {
-            return await _travelDbContext.Comments.FirstOrDefaultAsync(o => o.TRouterouteId == routeId && o.commentId == commentId); // bad
+            return await _travelDbContext.Comments.FirstOrDefaultAsync(o => o.TRouterouteId == routeId && o.commentId == commentId);
         }
         public async Task<List<Comment>> GetCommentsAsync(int routeId)
         {

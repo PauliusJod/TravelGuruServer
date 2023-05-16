@@ -22,10 +22,6 @@ namespace TravelGuruServer.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=tcp:battleshipnewdb.database.windows.net,1433;Initial Catalog=LibrariesDB;Persist Security Info=False;User ID=CloudSA13cebd8f;Password=Paliusxxx123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
-            //(LocalDb)\MSSQLLocalDB
-            //DESKTOP-A2LFQQD
             optionsBuilder.UseSqlServer("Server =(LocalDb)\\MSSQLLocalDB; Database=TravelGuru; Trusted_Connection = True");
         }
 

@@ -11,9 +11,9 @@ namespace TravelGuruServer.Entities
         public string rName { get; set; }
         public string rOrigin { get; set; }
         public string rDestination { get; set; }
-        public double rTripCost { get; set; } //TODO
-        public float rRating { get; set; } //TODO
-        public bool rIsPublished { get; set; } //TODO
+        public double rTripCost { get; set; }
+        public float rRating { get; set; }
+        public bool rIsPublished { get; set; }
         public string? rCountry { get; set; }
 
         public List<RImagesUrl>? rImagesUrl { get; set; }

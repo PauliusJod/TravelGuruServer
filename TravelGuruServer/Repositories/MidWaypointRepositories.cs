@@ -20,9 +20,9 @@ namespace TravelGuruServer.Repositories
             _travelDbContext = travelDbContext;
         }
 
-        public async Task<MidWaypoint?> GetMidWaypointAsync(int routeId, int midWaypointId) //int routeid, 
+        public async Task<MidWaypoint?> GetMidWaypointAsync(int routeId, int midWaypointId)
         {
-            return await _travelDbContext.MidWaypoints.FirstOrDefaultAsync(o => o.midWaypointId == midWaypointId && o.TRouterouteId == routeId); // bad
+            return await _travelDbContext.MidWaypoints.FirstOrDefaultAsync(o => o.midWaypointId == midWaypointId && o.TRouterouteId == routeId);
         }
         public async Task<List<MidWaypoint>> GetMidWaypointsAsync(int routeId)
         {

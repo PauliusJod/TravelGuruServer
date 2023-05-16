@@ -66,24 +66,5 @@ namespace TravelGuruServer.Repositories
         }
 
 
-
-        //----------------------------------------------------------------------SECTION
-        //public async Task<AdditionalPoints?> GetAdditionalSectionMarkAsync(int sectionId)
-        //{
-        //    return await _travelDbContext.AdditionalSectionPoints.FirstOrDefaultAsync(o => o.TrouteSectionDescriptionsectionId == sectionId);
-        //}
-        //public async Task<List<AdditionalPoints>> GetAdditionalSectionMarksAsync()
-        //{
-        //    return await _travelDbContext.AdditionalSectionPoints.ToListAsync();
-        //}
-
-        //public async Task CreateSectionAdditionalMarkAsync(AdditionalPoints additionalPoint)
-        //{
-        //    _travelDbContext.AdditionalSectionPoints.Add(additionalPoint);
-        //    await _travelDbContext.SaveChangesAsync();
-
-        //}
-
-
     }
 }

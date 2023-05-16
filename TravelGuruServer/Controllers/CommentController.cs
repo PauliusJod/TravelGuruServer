@@ -21,14 +21,6 @@ namespace TravelGuruServer.Controllers
             _commentRepositories = commentRepositories;
         }
 
-        //[HttpGet]
-        //[Route("routecomments/{trouteId}")]
-        //public async Task<IEnumerable<CommentDto>> GetComments(int trouteId)
-        //{
-        //    var comments = await _commentRepositories.GetCommentsAsync(trouteId);
-
-        //    return comments.Select(o => new CommentDto(o.commentId, o.commentText, o.commentRating, o.commentDate, o.TRouterouteId));
-        //}
         [HttpGet]
         [Route("routecomments/{trouteId}")]
         public async Task<IActionResult> GetComments(int trouteId)
@@ -45,9 +37,6 @@ namespace TravelGuruServer.Controllers
         [Route("routecomments/{trouteId}/newcomment")]
         public async Task<ActionResult<Comment>> Create(int trouteId, CreateCommentDto createCommentDto)
         {
-            //var checkRouteExist = await _routesRepository.GetRouteAsync(trouteId);
-            //if (checkRouteExist == null) return NoContent();
-            //if (User.FindFirstValue(JwtRegisteredClaimNames.Sub) == null) return Unauthorized();
 
             var comment = new Comment
             {

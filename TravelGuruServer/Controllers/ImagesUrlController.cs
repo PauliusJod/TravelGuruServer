@@ -33,22 +33,6 @@ namespace TravelGuruServer.Controllers
             return imagesUrls.Select(o => new ImagesUrlDto(o.rImagesUrlId, o.rImagesUrlLink, o.TRouterouteId));
         }
 
-        //[HttpPost]
-        //[Route("troutes/{trouteId}/newimageurl")]
-        //public async Task<ActionResult<ImagesUrlDto>> Create(int trouteId, CreateImagesUrlDto createImagesUrlDto)
-        //{
-
-
-        //    var image = new RImagesUrl
-        //    {
-        //        rImagesUrlLink = createImagesUrlDto.rImagesUrlLink,
-        //    };
-        //    image.TRouterouteId = trouteId;
-        //    await _rImagesUrlRepositories.CreateImageAsync(image);
-        //    // 201
-        //    return Created($"api/troutes/{trouteId}/newimageurl{image.TRouterouteId}", new ImagesUrlDto(image.rImagesUrlId, image.rImagesUrlLink, image.TRouterouteId));
-        //}
-
         [HttpPost]
         [Route("troutes/{trouteId}/newimageurl")]
         public async Task<ActionResult<ImagesUrlDto>> Create(int trouteId, CreateImagesUrlDto createImagesUrlDto)

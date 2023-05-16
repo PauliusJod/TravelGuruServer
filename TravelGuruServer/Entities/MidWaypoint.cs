@@ -11,8 +11,6 @@ namespace TravelGuruServer.Entities
         public string? midWaypointLocation { get; set; }
         public bool midWaypointStopover { get; set; }
 
-        // Kiekvienas taskas turi galeti tureti papildomas taskus/zymejimus
-
         public int? TRouterouteId { get; set; }
 
     }

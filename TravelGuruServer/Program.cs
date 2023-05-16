@@ -13,27 +13,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-// Add services to the container.
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-// Add services to the container.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
             policy =>
             {
                 policy.WithOrigins("http://localhost:3000",
-                                    "http://www.contoso.com"); // add the allowed origins
+                                    "http://www.contoso.com");
             });
 });
 
-// Added
 
 builder.Services.AddControllers();
-
-
-
-//builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<TravelUser, IdentityRole>()
     .AddEntityFrameworkStores<TravelDBContext>()
@@ -58,8 +51,8 @@ builder.Services.AddAuthentication(options =>
 })
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters.ValidAudience = builder.Configuration["JWT:ValidAudience"];       // KAM išrašom
-        options.TokenValidationParameters.ValidIssuer = builder.Configuration["JWT:ValidIssuer"];           // KAS išrašo
+        options.TokenValidationParameters.ValidAudience = builder.Configuration["JWT:ValidAudience"];
+        options.TokenValidationParameters.ValidIssuer = builder.Configuration["JWT:ValidIssuer"];
         options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]));
     });
 builder.Services.AddCors(cr =>

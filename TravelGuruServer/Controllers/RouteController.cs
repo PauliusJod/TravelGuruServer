@@ -31,7 +31,6 @@ namespace TravelGuruServer.Controllers
         private readonly IAdditionalPointRepositories _additionalPointRepositories;
 
         private readonly UserManager<TravelUser> _userManager;
-        //private readonly IAuthorizationService _authorizationService;
 
         public RouteController(UserManager<TravelUser> userManager,IRouteRespositories routesRepository, IMidWaypointRepositories midWaypointsRepository, IRouteSectionRepositories routeSectionRepositories, IRoutePointRepositories routePointRepositories, IRImagesUrlRepositories rImagesUrlRepositories, IRRecommendationUrlRepositories rRecommendationUrlRepositories, IAdditionalPointRepositories additionalPointRepositories)
         {
@@ -50,12 +49,7 @@ namespace TravelGuruServer.Controllers
         [Route("public")]
         public async Task<IEnumerable<GetTRoutesDto>> GetPublicTRoutes()
         {
-            //IEnumerable
             var routes = await _routesRepository.GetPublicRoutesAsync();
-
-            //// 404
-            //if (routes == null)
-            //    return NotFound();
 
             foreach (var item in routes)
             {
@@ -66,43 +60,17 @@ namespace TravelGuruServer.Controllers
             return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
 
-        //[HttpGet]
-        //public async Task<IEnumerable<GetTRoutesDto>> GetPrivateTRoutes()
-        //{
-        //    var routes = await _routesRepository.GetRoutesAsync();
-
-        //    return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
-        //}
         [HttpGet]
         [Route("usercreated/{userId}")]
         public async Task<IEnumerable<GetTRoutesDto>> GetUserCreatedPrivateTRoutes(string userId)
         {
-            //string UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
             Console.WriteLine(userId);
             var routes = await _routesRepository.GetUserCreatedRoutesAsync(userId);
 
             return routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl));
         }
 
-        //[HttpGet]
-        //[Route("usercreated/{userId}")]
-        //public async Task<IActionResult> GetUserCreatedPrivateTRoutes(string userId)
-        //{
-
-        //    if(userId != User.FindFirstValue(JwtRegisteredClaimNames.Sub))
-        //    {
-        //        return Unauthorized();
-        //    }
-        //    var userValid = await _userManager.FindByIdAsync(userId);
-        //    if (userValid == null)
-        //    {
-        //        return NotFound("User was not found");
-        //    }
-        //    var routes = await _routesRepository.GetUserCreatedRoutesAsync(userId);
-        //    if (routes.Count == 0) return NotFound($"User have zero routes created");
-
-        //    return Ok(routes.Select(o => new GetTRoutesDto(o.routeId, o.rName, o.rOrigin, o.rDestination, o.rTripCost, o.rRating, o.rIsPublished, o.rCountry, o.rImagesUrl, o.rRecommendationUrl)));
-        //}
         [HttpGet]
         [Route("{routeId}")]
         public async Task<ActionResult<TRouteDto>> GetPrivateTRoute(int routeId)
@@ -156,14 +124,7 @@ namespace TravelGuruServer.Controllers
                     await _midWaypointsRepository.CreateAsync(item);
                 }
             }
-            //if (createTRouteDto.sectionDescriptions != null)
-            //{
-            //    foreach (var item in createTRouteDto.sectionDescriptions)
-            //    {
-            //        item.TRouterouteId = route.routeId;
-            //        await _routeSectionRepositories.CreateAsync(item);
-            //    }
-            //}
+
             if (createTRouteDto.pointDescriptions != null)
             {
                 foreach (var item in createTRouteDto.pointDescriptions)
@@ -178,7 +139,7 @@ namespace TravelGuruServer.Controllers
         }
 
         [HttpPut]
-        [Route("{routeId}")] // UPDATE'int tik tą kurį išsitraukei iš DUOMENŲ BAZĖS!!!
+        [Route("{routeId}")]
         public async Task<ActionResult<TRouteDto>> Update(int routeId, UpdateTRouteDto updateTRouteDto)
         {
             var route = await _routesRepository.GetRouteAsync(routeId);
@@ -194,12 +155,10 @@ namespace TravelGuruServer.Controllers
                     {
                         foreach (var item in updateTRouteDto.additionalMarkers[i])
                         {
-                            //item.additionalPointRouteId = route.routeId;
                             var additionalPoint = await _additionalPointRepositories.GetAdditionalPointMarkAsync(item.additionalPointRouteId, item.TroutePointDescriptionpointId, item.additionalPointIdInList);
 
                             if (additionalPoint == null)
                             {
-                                /*item.TroutePointDescriptionpointId = updateTRoutePrivateDto.pointDescriptions[i].pointId;*/
                                 await _additionalPointRepositories.CreatePointAdditionalMarkAsync(item);
                             }
                             else if (additionalPoint == item && additionalPoint != null)

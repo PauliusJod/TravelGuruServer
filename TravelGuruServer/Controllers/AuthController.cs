@@ -6,13 +6,12 @@ using TravelGuruServer.Auth;
 using static TravelGuruServer.Data.Dtos.AuthDtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace TravelGuruServer.Controllers
 {
 
     [ApiController]
-    [AllowAnonymous]  //[Authorize(Roles = TravelUserRoles.TravellerUser)]
+    [AllowAnonymous]
     [Route("api")]
     public class AuthController : ControllerBase
     {
@@ -117,32 +116,15 @@ namespace TravelGuruServer.Controllers
 
             return Ok(new SuccessfullLoginDto(accesToken));
 
-
-
         }
 
-        public async Task<ActionResult> Logout()//string userName)
+        public async Task<ActionResult> Logout()
         {
-
-            //var user = _userManager.GetUserAsync(userName);
-            //var city = await _userManager.GetAuthenticationTokenAsync(cityid);
-            //// 404
-            //if (city == null)
-            //    return NotFound();
-            //await _citiesRepository.DeleteAsync(city);
-
-
-
-            //// 204
-            //return NoContent();
-            var user = await _userManager.FindByNameAsync("paulius33");//logoutDto.UserName);
+            var user = await _userManager.FindByNameAsync("paulius33");
             if (user == null)
                 return BadRequest("Request invalid.");
             var soo = await _userManager.RemoveAuthenticationTokenAsync(user, "HS256", "Bearer");
             _userManager.ResetAuthenticatorKeyAsync(user);
-            ////valid user
-            //var roles = await _userManager.GetRolesAsync(user);
-            //_jwtTokenService.DeleteAccessToken(user.UserName, user.Id, roles);
 
             return Ok("Deleted?");
 

@@ -44,9 +44,6 @@ namespace TravelGuruServer.Controllers
             return NoContent();
         }
 
-
-
-        //CreateRecommendationPrivateAsync
         [HttpPost]
         [Route("troutes/{trouteId}/recommendationurl")]
         public async Task<ActionResult<RecommendationPrivateDto>> Create(int trouteId, CreatePrivateRecommendationDto createPrivateRecommendationDto)
