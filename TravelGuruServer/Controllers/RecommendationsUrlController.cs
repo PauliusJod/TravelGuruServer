@@ -30,8 +30,8 @@ namespace TravelGuruServer.Controllers
         }
 
         [HttpDelete]
-        [Route("troutes/{trouteId}/recommendationurl/{recomendationId}")]
-        public async Task<ActionResult> Remove(int routeId,int recommendationId)
+        [Route("troutes/{trouteId}/recommendationurl/{recommendationId}")]
+        public async Task<ActionResult> Remove(int trouteId,int recommendationId)
         {
             var recommendation = await _rRecommendationUrlRepositories.GetRecommendationAsync(recommendationId);
 
